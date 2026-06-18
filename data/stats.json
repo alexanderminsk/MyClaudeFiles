@@ -1,0 +1,27 @@
+{
+  "updated": "2025-08-01",
+  "gdp_per_capita": {
+    "BY": [{"year":2005,"value":3044},{"year":2008,"value":6371},{"year":2010,"value":5823},{"year":2012,"value":6766},{"year":2014,"value":8037},{"year":2016,"value":4977},{"year":2018,"value":6324},{"year":2020,"value":6346},{"year":2022,"value":7483},{"year":2023,"value":8193}],
+    "PL": [{"year":2005,"value":8032},{"year":2008,"value":14016},{"year":2010,"value":12604},{"year":2012,"value":13432},{"year":2014,"value":14341},{"year":2016,"value":12413},{"year":2018,"value":15430},{"year":2020,"value":15659},{"year":2022,"value":18045},{"year":2023,"value":21000}],
+    "LT": [{"year":2005,"value":8360},{"year":2008,"value":15987},{"year":2010,"value":12060},{"year":2012,"value":14360},{"year":2014,"value":16510},{"year":2016,"value":15121},{"year":2018,"value":18891},{"year":2020,"value":20042},{"year":2022,"value":24164},{"year":2023,"value":27090}],
+    "LV": [{"year":2005,"value":7659},{"year":2008,"value":16093},{"year":2010,"value":11355},{"year":2012,"value":14081},{"year":2014,"value":15985},{"year":2016,"value":14210},{"year":2018,"value":17800},{"year":2020,"value":17619},{"year":2022,"value":21356},{"year":2023,"value":23670}],
+    "UA": [{"year":2005,"value":1828},{"year":2008,"value":3884},{"year":2010,"value":2974},{"year":2012,"value":3855},{"year":2014,"value":3015},{"year":2016,"value":2186},{"year":2018,"value":3096},{"year":2020,"value":3427},{"year":2022,"value":4534},{"year":2023,"value":4862}],
+    "RU": [{"year":2005,"value":5323},{"year":2008,"value":11635},{"year":2010,"value":10675},{"year":2012,"value":14212},{"year":2014,"value":13895},{"year":2016,"value":8704},{"year":2018,"value":11289},{"year":2020,"value":10126},{"year":2022,"value":12113},{"year":2023,"value":13600}]
+  },
+  "inflation": {
+    "BY": [{"year":2005,"value":10.3},{"year":2008,"value":14.8},{"year":2010,"value":7.7},{"year":2011,"value":53.2},{"year":2012,"value":59.2},{"year":2014,"value":18.1},{"year":2016,"value":11.8},{"year":2018,"value":4.9},{"year":2020,"value":5.5},{"year":2022,"value":15.2},{"year":2023,"value":5.1}],
+    "PL": [{"year":2005,"value":2.1},{"year":2008,"value":4.2},{"year":2010,"value":2.7},{"year":2012,"value":3.7},{"year":2014,"value":0.0},{"year":2016,"value":-0.6},{"year":2018,"value":1.8},{"year":2020,"value":3.7},{"year":2022,"value":14.4},{"year":2023,"value":11.4}],
+    "LT": [{"year":2005,"value":2.7},{"year":2008,"value":11.1},{"year":2010,"value":1.2},{"year":2012,"value":3.2},{"year":2014,"value":0.2},{"year":2016,"value":0.7},{"year":2018,"value":2.5},{"year":2020,"value":1.1},{"year":2022,"value":18.9},{"year":2023,"value":8.7}],
+    "LV": [{"year":2005,"value":6.9},{"year":2008,"value":15.3},{"year":2010,"value":-1.2},{"year":2012,"value":2.3},{"year":2014,"value":0.7},{"year":2016,"value":0.1},{"year":2018,"value":2.6},{"year":2020,"value":0.2},{"year":2022,"value":17.2},{"year":2023,"value":9.0}],
+    "UA": [{"year":2005,"value":13.5},{"year":2008,"value":25.2},{"year":2010,"value":9.4},{"year":2012,"value":0.6},{"year":2014,"value":12.1},{"year":2015,"value":48.7},{"year":2016,"value":13.9},{"year":2018,"value":10.9},{"year":2020,"value":2.7},{"year":2022,"value":20.2},{"year":2023,"value":12.9}],
+    "RU": [{"year":2005,"value":12.7},{"year":2008,"value":14.1},{"year":2010,"value":6.9},{"year":2012,"value":5.1},{"year":2014,"value":7.8},{"year":2015,"value":15.5},{"year":2016,"value":7.0},{"year":2018,"value":2.9},{"year":2020,"value":3.4},{"year":2022,"value":13.7},{"year":2023,"value":7.4}]
+  },
+  "wages": {
+    "BY": [{"year":2010,"value":330},{"year":2015,"value":420},{"year":2018,"value":480},{"year":2020,"value":490},{"year":2022,"value":580},{"year":2023,"value":640}],
+    "PL": [{"year":2010,"value":890},{"year":2015,"value":950},{"year":2018,"value":1150},{"year":2020,"value":1380},{"year":2022,"value":1630},{"year":2023,"value":1820}],
+    "LT": [{"year":2010,"value":740},{"year":2015,"value":820},{"year":2018,"value":1100},{"year":2020,"value":1380},{"year":2022,"value":1720},{"year":2023,"value":2050}],
+    "LV": [{"year":2010,"value":700},{"year":2015,"value":820},{"year":2018,"value":1050},{"year":2020,"value":1220},{"year":2022,"value":1520},{"year":2023,"value":1720}],
+    "UA": [{"year":2010,"value":280},{"year":2015,"value":195},{"year":2018,"value":310},{"year":2020,"value":400},{"year":2022,"value":470},{"year":2023,"value":510}],
+    "RU": [{"year":2010,"value":730},{"year":2015,"value":565},{"year":2018,"value":715},{"year":2020,"value":730},{"year":2022,"value":890},{"year":2023,"value":970}]
+  }
+}
