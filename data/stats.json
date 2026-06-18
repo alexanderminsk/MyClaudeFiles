@@ -1554,517 +1554,517 @@
       }
     ]
   },
-  "unemployment": {
+  "population": {
     "BY": [
       {
         "year": 2005,
-        "value": 8.8
+        "value": 9663915
       },
       {
         "year": 2006,
-        "value": 8.1
+        "value": 9604924
       },
       {
         "year": 2007,
-        "value": 7.4
+        "value": 9560953
       },
       {
         "year": 2008,
-        "value": 6.7
+        "value": 9527985
       },
       {
         "year": 2009,
-        "value": 6.1
+        "value": 9504583
       },
       {
         "year": 2010,
-        "value": 6.1
+        "value": 9483836
       },
       {
         "year": 2011,
-        "value": 6
+        "value": 9461643
       },
       {
         "year": 2012,
-        "value": 6
+        "value": 9446836
       },
       {
         "year": 2013,
-        "value": 5.9
+        "value": 9443211
       },
       {
         "year": 2014,
-        "value": 5.9
+        "value": 9448515
       },
       {
         "year": 2015,
-        "value": 5.9
+        "value": 9461076
       },
       {
         "year": 2016,
-        "value": 5.8
+        "value": 9469379
       },
       {
         "year": 2017,
-        "value": 5.6
+        "value": 9458989
       },
       {
         "year": 2018,
-        "value": 4.8
+        "value": 9438785
       },
       {
         "year": 2019,
-        "value": 4.2
+        "value": 9419758
       },
       {
         "year": 2020,
-        "value": 4
+        "value": 9379952
       },
       {
         "year": 2021,
-        "value": 3.9
+        "value": 9302585
       },
       {
         "year": 2022,
-        "value": 3.6
+        "value": 9228071
       },
       {
         "year": 2023,
-        "value": 3.5
+        "value": 9178298
       },
       {
         "year": 2024,
-        "value": 3.5
+        "value": 9132629
       },
       {
         "year": 2025,
-        "value": 3.4
+        "value": null
       }
     ],
     "LT": [
       {
         "year": 2005,
-        "value": 8.3
+        "value": 3322528
       },
       {
         "year": 2006,
-        "value": 5.8
+        "value": 3269909
       },
       {
         "year": 2007,
-        "value": 4.3
+        "value": 3231294
       },
       {
         "year": 2008,
-        "value": 5.8
+        "value": 3198231
       },
       {
         "year": 2009,
-        "value": 13.8
+        "value": 3162916
       },
       {
         "year": 2010,
-        "value": 17.8
+        "value": 3097282
       },
       {
         "year": 2011,
-        "value": 15.4
+        "value": 3028115
       },
       {
         "year": 2012,
-        "value": 13.4
+        "value": 2989139
       },
       {
         "year": 2013,
-        "value": 11.8
+        "value": 2961250
       },
       {
         "year": 2014,
-        "value": 10.7
+        "value": 2937253
       },
       {
         "year": 2015,
-        "value": 9.1
+        "value": 2911109
       },
       {
         "year": 2016,
-        "value": 7.9
+        "value": 2877325
       },
       {
         "year": 2017,
-        "value": 7.1
+        "value": 2842639
       },
       {
         "year": 2018,
-        "value": 6.1
+        "value": 2819200
       },
       {
         "year": 2019,
-        "value": 6.3
+        "value": 2811089
       },
       {
         "year": 2020,
-        "value": 8.5
+        "value": 2810369
       },
       {
         "year": 2021,
-        "value": 7.1
+        "value": 2808380
       },
       {
         "year": 2022,
-        "value": 6
+        "value": 2831639
       },
       {
         "year": 2023,
-        "value": 6.8
+        "value": 2871585
       },
       {
         "year": 2024,
-        "value": 6.9
+        "value": 2888278
       },
       {
         "year": 2025,
-        "value": 6.7
+        "value": null
       }
     ],
     "LV": [
       {
         "year": 2005,
-        "value": 10
+        "value": 2238799
       },
       {
         "year": 2006,
-        "value": 7
+        "value": 2218357
       },
       {
         "year": 2007,
-        "value": 6.1
+        "value": 2200325
       },
       {
         "year": 2008,
-        "value": 7.7
+        "value": 2177322
       },
       {
         "year": 2009,
-        "value": 17.5
+        "value": 2141669
       },
       {
         "year": 2010,
-        "value": 19.5
+        "value": 2097555
       },
       {
         "year": 2011,
-        "value": 16.2
+        "value": 2059709
       },
       {
         "year": 2012,
-        "value": 15
+        "value": 2034319
       },
       {
         "year": 2013,
-        "value": 11.9
+        "value": 2012647
       },
       {
         "year": 2014,
-        "value": 10.8
+        "value": 1993782
       },
       {
         "year": 2015,
-        "value": 9.9
+        "value": 1977527
       },
       {
         "year": 2016,
-        "value": 9.6
+        "value": 1959537
       },
       {
         "year": 2017,
-        "value": 8.7
+        "value": 1942248
       },
       {
         "year": 2018,
-        "value": 7.4
+        "value": 1927174
       },
       {
         "year": 2019,
-        "value": 6.3
+        "value": 1913822
       },
       {
         "year": 2020,
-        "value": 8.1
+        "value": 1900449
       },
       {
         "year": 2021,
-        "value": 7.5
+        "value": 1884490
       },
       {
         "year": 2022,
-        "value": 6.8
+        "value": 1879383
       },
       {
         "year": 2023,
-        "value": 6.5
+        "value": 1883710
       },
       {
         "year": 2024,
-        "value": 6.9
+        "value": 1866124
       },
       {
         "year": 2025,
-        "value": 6.6
+        "value": null
       }
     ],
     "PL": [
       {
         "year": 2005,
-        "value": 17.6
+        "value": 38165445
       },
       {
         "year": 2006,
-        "value": 13.8
+        "value": 38141267
       },
       {
         "year": 2007,
-        "value": 9.6
+        "value": 38120560
       },
       {
         "year": 2008,
-        "value": 7.1
+        "value": 38125759
       },
       {
         "year": 2009,
-        "value": 8.1
+        "value": 38151603
       },
       {
         "year": 2010,
-        "value": 9.6
+        "value": 38042794
       },
       {
         "year": 2011,
-        "value": 9.6
+        "value": 38063255
       },
       {
         "year": 2012,
-        "value": 10
+        "value": 38063164
       },
       {
         "year": 2013,
-        "value": 10.3
+        "value": 38040196
       },
       {
         "year": 2014,
-        "value": 9
+        "value": 38011735
       },
       {
         "year": 2015,
-        "value": 7.5
+        "value": 37986412
       },
       {
         "year": 2016,
-        "value": 6.1
+        "value": 37970087
       },
       {
         "year": 2017,
-        "value": 4.9
+        "value": 37974826
       },
       {
         "year": 2018,
-        "value": 3.8
+        "value": 37974750
       },
       {
         "year": 2019,
-        "value": 3.3
+        "value": 37965475
       },
       {
         "year": 2020,
-        "value": 3.2
+        "value": 37515748
       },
       {
         "year": 2021,
-        "value": 3.3
+        "value": 36981559
       },
       {
         "year": 2022,
-        "value": 2.8
+        "value": 36821749
       },
       {
         "year": 2023,
-        "value": 2.7
+        "value": 36687353
       },
       {
         "year": 2024,
-        "value": 2.8
+        "value": 36559233
       },
       {
         "year": 2025,
-        "value": 3
+        "value": null
       }
     ],
     "RU": [
       {
         "year": 2005,
-        "value": 7.1
+        "value": 143518814
       },
       {
         "year": 2006,
-        "value": 7.1
+        "value": 143049637
       },
       {
         "year": 2007,
-        "value": 6
+        "value": 142805114
       },
       {
         "year": 2008,
-        "value": 6.2
+        "value": 142742366
       },
       {
         "year": 2009,
-        "value": 8.3
+        "value": 142785348
       },
       {
         "year": 2010,
-        "value": 7.4
+        "value": 142849468
       },
       {
         "year": 2011,
-        "value": 6.6
+        "value": 143018195
       },
       {
         "year": 2012,
-        "value": 5.5
+        "value": 143378447
       },
       {
         "year": 2013,
-        "value": 5.5
+        "value": 143805638
       },
       {
         "year": 2014,
-        "value": 5.2
+        "value": 144237223
       },
       {
         "year": 2015,
-        "value": 5.6
+        "value": 144640716
       },
       {
         "year": 2016,
-        "value": 5.6
+        "value": 145015460
       },
       {
         "year": 2017,
-        "value": 5.2
+        "value": 145293260
       },
       {
         "year": 2018,
-        "value": 4.9
+        "value": 145398106
       },
       {
         "year": 2019,
-        "value": 4.5
+        "value": 145453291
       },
       {
         "year": 2020,
-        "value": 5.6
+        "value": 145245148
       },
       {
         "year": 2021,
-        "value": 4.7
+        "value": 144746762
       },
       {
         "year": 2022,
-        "value": 3.9
+        "value": 144236933
       },
       {
         "year": 2023,
-        "value": 3.1
+        "value": 143826130
       },
       {
         "year": 2024,
-        "value": 2.4
+        "value": 143533851
       },
       {
         "year": 2025,
-        "value": 2.1
+        "value": null
       }
     ],
     "UA": [
       {
         "year": 2005,
-        "value": 7.2
+        "value": 47585556
       },
       {
         "year": 2006,
-        "value": 6.8
+        "value": 47278694
       },
       {
         "year": 2007,
-        "value": 6.4
+        "value": 47062798
       },
       {
         "year": 2008,
-        "value": 6.4
+        "value": 46819175
       },
       {
         "year": 2009,
-        "value": 8.8
+        "value": 46623731
       },
       {
         "year": 2010,
-        "value": 8.1
+        "value": 46456003
       },
       {
         "year": 2011,
-        "value": 7.9
+        "value": 46307853
       },
       {
         "year": 2012,
-        "value": 7.5
+        "value": 46210056
       },
       {
         "year": 2013,
-        "value": 7.2
+        "value": 46126770
       },
       {
         "year": 2014,
-        "value": 9.3
+        "value": 45972380
       },
       {
         "year": 2015,
-        "value": 9.1
+        "value": 45784896
       },
       {
         "year": 2016,
-        "value": 9.4
+        "value": 45616832
       },
       {
         "year": 2017,
-        "value": 9.5
+        "value": 45436041
       },
       {
         "year": 2018,
-        "value": 8.8
+        "value": 45208907
       },
       {
         "year": 2019,
-        "value": 8.2
+        "value": 44957458
       },
       {
         "year": 2020,
-        "value": 9.5
+        "value": 44680014
       },
       {
         "year": 2021,
-        "value": 9.8
+        "value": 44298640
       },
       {
         "year": 2022,
-        "value": null
+        "value": 41048766
       },
       {
         "year": 2023,
-        "value": null
+        "value": 37732836
       },
       {
         "year": 2024,
-        "value": null
+        "value": 37860221
       },
       {
         "year": 2025,
@@ -2072,71 +2072,71 @@
       }
     ]
   },
-  "debt": {
+  "gini": {
     "BY": [
       {
         "year": 2005,
-        "value": 6.6
+        "value": 27.6
       },
       {
         "year": 2006,
-        "value": 6.6
+        "value": 28.3
       },
       {
         "year": 2007,
-        "value": 8.9
+        "value": 29.6
       },
       {
         "year": 2008,
-        "value": 10.7
+        "value": 27.8
       },
       {
         "year": 2009,
-        "value": 18.6
+        "value": 27.7
       },
       {
         "year": 2010,
-        "value": 18.9
+        "value": 28.6
       },
       {
         "year": 2011,
-        "value": 39.4
+        "value": 27.2
       },
       {
         "year": 2012,
-        "value": 24.4
+        "value": 26.5
       },
       {
         "year": 2013,
-        "value": 23.8
+        "value": 26.6
       },
       {
         "year": 2014,
-        "value": 24.5
+        "value": 27.2
       },
       {
         "year": 2015,
-        "value": 37.6
+        "value": 25.6
       },
       {
         "year": 2016,
-        "value": 38.9
+        "value": 25.3
       },
       {
         "year": 2017,
-        "value": 39.9
+        "value": 25.4
       },
       {
         "year": 2018,
-        "value": 37.1
+        "value": 25.2
       },
       {
         "year": 2019,
-        "value": 33.2
+        "value": 25.3
       },
       {
         "year": 2020,
-        "value": null
+        "value": 24.4
       },
       {
         "year": 2021,
@@ -2162,79 +2162,79 @@
     "LT": [
       {
         "year": 2005,
-        "value": null
+        "value": 35.3
       },
       {
         "year": 2006,
-        "value": null
+        "value": 34.4
       },
       {
         "year": 2007,
-        "value": null
+        "value": 34.8
       },
       {
         "year": 2008,
-        "value": null
+        "value": 35.7
       },
       {
         "year": 2009,
-        "value": null
+        "value": 37.2
       },
       {
         "year": 2010,
-        "value": null
+        "value": 33.6
       },
       {
         "year": 2011,
-        "value": null
+        "value": 32.5
       },
       {
         "year": 2012,
-        "value": null
+        "value": 35.1
       },
       {
         "year": 2013,
-        "value": null
+        "value": 35.3
       },
       {
         "year": 2014,
-        "value": null
+        "value": 37.7
       },
       {
         "year": 2015,
-        "value": null
+        "value": 37.4
       },
       {
         "year": 2016,
-        "value": null
+        "value": 38.4
       },
       {
         "year": 2017,
-        "value": null
+        "value": 37.3
       },
       {
         "year": 2018,
-        "value": null
+        "value": 35.7
       },
       {
         "year": 2019,
-        "value": null
+        "value": 35.3
       },
       {
         "year": 2020,
-        "value": null
+        "value": 36
       },
       {
         "year": 2021,
-        "value": null
+        "value": 36.7
       },
       {
         "year": 2022,
-        "value": null
+        "value": 36.6
       },
       {
         "year": 2023,
-        "value": null
+        "value": 36
       },
       {
         "year": 2024,
@@ -2248,79 +2248,79 @@
     "LV": [
       {
         "year": 2005,
-        "value": null
+        "value": 39
       },
       {
         "year": 2006,
-        "value": null
+        "value": 35.6
       },
       {
         "year": 2007,
-        "value": null
+        "value": 37.5
       },
       {
         "year": 2008,
-        "value": null
+        "value": 37.2
       },
       {
         "year": 2009,
-        "value": null
+        "value": 35.9
       },
       {
         "year": 2010,
-        "value": null
+        "value": 35
       },
       {
         "year": 2011,
-        "value": null
+        "value": 35.8
       },
       {
         "year": 2012,
-        "value": null
+        "value": 35.2
       },
       {
         "year": 2013,
-        "value": null
+        "value": 35.5
       },
       {
         "year": 2014,
-        "value": null
+        "value": 35.1
       },
       {
         "year": 2015,
-        "value": null
+        "value": 34.2
       },
       {
         "year": 2016,
-        "value": null
+        "value": 34.3
       },
       {
         "year": 2017,
-        "value": null
+        "value": 35.6
       },
       {
         "year": 2018,
-        "value": null
+        "value": 35.1
       },
       {
         "year": 2019,
-        "value": null
+        "value": 34.5
       },
       {
         "year": 2020,
-        "value": null
+        "value": 35.7
       },
       {
         "year": 2021,
-        "value": null
+        "value": 34.3
       },
       {
         "year": 2022,
-        "value": null
+        "value": 33.7
       },
       {
         "year": 2023,
-        "value": null
+        "value": 34
       },
       {
         "year": 2024,
@@ -2334,79 +2334,79 @@
     "PL": [
       {
         "year": 2005,
-        "value": null
+        "value": 35.8
       },
       {
         "year": 2006,
-        "value": null
+        "value": 34.7
       },
       {
         "year": 2007,
-        "value": null
+        "value": 34
       },
       {
         "year": 2008,
-        "value": null
+        "value": 33.5
       },
       {
         "year": 2009,
-        "value": null
+        "value": 33.4
       },
       {
         "year": 2010,
-        "value": null
+        "value": 33.2
       },
       {
         "year": 2011,
-        "value": null
+        "value": 33.2
       },
       {
         "year": 2012,
-        "value": null
+        "value": 33
       },
       {
         "year": 2013,
-        "value": null
+        "value": 33.1
       },
       {
         "year": 2014,
-        "value": null
+        "value": 32.8
       },
       {
         "year": 2015,
-        "value": null
+        "value": 31.8
       },
       {
         "year": 2016,
-        "value": null
+        "value": 31.2
       },
       {
         "year": 2017,
-        "value": null
+        "value": 29.7
       },
       {
         "year": 2018,
-        "value": null
+        "value": 30.2
       },
       {
         "year": 2019,
-        "value": null
+        "value": 28.8
       },
       {
         "year": 2020,
-        "value": null
+        "value": 28.5
       },
       {
         "year": 2021,
-        "value": null
+        "value": 28.5
       },
       {
         "year": 2022,
-        "value": null
+        "value": 28.9
       },
       {
         "year": 2023,
-        "value": null
+        "value": 28.5
       },
       {
         "year": 2024,
@@ -2420,83 +2420,83 @@
     "RU": [
       {
         "year": 2005,
-        "value": 16.7
+        "value": 41.3
       },
       {
         "year": 2006,
-        "value": 9.9
+        "value": 41
       },
       {
         "year": 2007,
-        "value": 7.2
+        "value": 42.3
       },
       {
         "year": 2008,
-        "value": 6.5
+        "value": 41.6
       },
       {
         "year": 2009,
-        "value": 8.7
+        "value": 39.8
       },
       {
         "year": 2010,
-        "value": 9.1
+        "value": 39.5
       },
       {
         "year": 2011,
-        "value": 8.6
+        "value": 39.7
       },
       {
         "year": 2012,
-        "value": 8.6
+        "value": 40.7
       },
       {
         "year": 2013,
-        "value": 9.1
+        "value": 40.9
       },
       {
         "year": 2014,
-        "value": 11.2
+        "value": 36.9
       },
       {
         "year": 2015,
-        "value": 13.5
+        "value": 36.5
       },
       {
         "year": 2016,
-        "value": 14.2
+        "value": 36.7
       },
       {
         "year": 2017,
-        "value": 16.3
+        "value": 35.5
       },
       {
         "year": 2018,
-        "value": 16.2
+        "value": 35.3
       },
       {
         "year": 2019,
-        "value": 17.3
+        "value": 35.7
       },
       {
         "year": 2020,
-        "value": 23
+        "value": 33.7
       },
       {
         "year": 2021,
-        "value": 21
+        "value": 35.1
       },
       {
         "year": 2022,
-        "value": 19.3
+        "value": 33.9
       },
       {
         "year": 2023,
-        "value": 18.5
+        "value": 33
       },
       {
         "year": 2024,
-        "value": 18
+        "value": null
       },
       {
         "year": 2025,
@@ -2506,67 +2506,67 @@
     "UA": [
       {
         "year": 2005,
-        "value": null
+        "value": 29
       },
       {
         "year": 2006,
-        "value": null
+        "value": 29.8
       },
       {
         "year": 2007,
-        "value": null
+        "value": 27
       },
       {
         "year": 2008,
-        "value": 13.2
+        "value": 26.6
       },
       {
         "year": 2009,
-        "value": 24
+        "value": 25.3
       },
       {
         "year": 2010,
-        "value": 28.9
+        "value": 24.8
       },
       {
         "year": 2011,
-        "value": 26.5
+        "value": 24.6
       },
       {
         "year": 2012,
-        "value": 32.4
+        "value": 24.7
       },
       {
         "year": 2013,
-        "value": 35.6
+        "value": 24.6
       },
       {
         "year": 2014,
-        "value": 63.7
+        "value": 24
       },
       {
         "year": 2015,
-        "value": 70.3
+        "value": 25.5
       },
       {
         "year": 2016,
-        "value": 71.8
+        "value": 25
       },
       {
         "year": 2017,
-        "value": 66.7
+        "value": 26
       },
       {
         "year": 2018,
-        "value": 56.9
+        "value": 26.1
       },
       {
         "year": 2019,
-        "value": 48.3
+        "value": 26.6
       },
       {
         "year": 2020,
-        "value": 58.7
+        "value": 25.6
       },
       {
         "year": 2021,
