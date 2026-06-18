@@ -11,15 +11,18 @@ const https = require('https');
 const COUNTRIES = ['BY', 'PL', 'LT', 'LV', 'UA', 'RU'];
 const YEAR_FROM = 2005;
 
+// World Bank indicator codes
 const INDICATORS = {
-  gdp_per_capita: 'NY.GDP.PCAP.CD',
-  inflation:      'FP.CPI.TOTL.ZG',
-  wages:          'NY.GNS.ICTR.ZS',
-  gdp_total:      'NY.GDP.MKTP.CD',
-  labor_share:    'SL.EMP.TOTL.SP.ZS',
+  gdp_per_capita: 'NY.GDP.PCAP.CD',   // ВВП на душу, USD текущие
+  inflation:      'FP.CPI.TOTL.ZG',   // Инфляция ИПЦ, %
+  wages:          'NY.GNS.ICTR.ZS',   // Валовые сбережения % ВВП (proxy; см. примечание)
+  gdp_total:      'NY.GDP.MKTP.CD',   // ВВП всего, для расчёта зарплат
+  labor_share:    'SL.EMP.TOTL.SP.ZS',// Занятость % нас-я
 };
 
-const WAGE_INDICATOR = 'SL.TLF.TOTL.IN';
+// Для зарплат используем: компенсация работникам (% ВВП) × ВВП / занятое население / 12
+// Это приблизительный показатель, реальные данные нацстатистик точнее
+const WAGE_INDICATOR = 'SL.TLF.TOTL.IN'; // Рабочая сила (чел.)
 const COMP_INDICATOR  = 'SL.EMP.TOTL.SP.ZS';
 
 function fetchJSON(url) {
@@ -63,16 +66,26 @@ async function fetchIndicator(indicator, countries) {
     });
   });
 
+  // Sort ascending
   Object.keys(result).forEach(k => result[k].sort((a, b) => a.year - b.year));
   return result;
 }
 
+// Simple ISO 3166-1 alpha-3 → alpha-2 map (only countries we need)
 const ISO3_MAP = {
   BLR: 'BY', POL: 'PL', LTU: 'LT', LVA: 'LV', UKR: 'UA', RUS: 'RU',
 };
 function iso3to2(c3) { return ISO3_MAP[c3] || c3; }
 
 async function fetchWages(countries) {
+  // Labour compensation as share of GDP × GDP / labour force / 12
+  // Indicator: NV.AGR.TOTL.ZS doesn't work well; use a simpler proxy:
+  // Average wage ≈ GDP per capita * 0.55 (rough labour share) / 12
+  // Better: fetch compensation of employees (% GDP) * GDP / employed / 12
+
+  // We fetch: GDP per capita (already have), and use labour share ~55%
+  // For a real version, Rosstat/Belstat numbers override this
+
   const gdp    = await fetchIndicator('NY.GDP.PCAP.CD', countries);
   const result = {};
 
@@ -80,6 +93,7 @@ async function fetchWages(countries) {
     const series = gdp[code] || [];
     result[code] = series.map(pt => ({
       year:  pt.year,
+      // approximate: GDP per capita * labour share (0.55) / 12 months
       value: pt.value != null ? Math.round(pt.value * 0.55 / 12) : null,
     }));
   });
@@ -97,11 +111,19 @@ async function main() {
   console.log('  Computing wage proxy…');
   const wages = await fetchWages(COUNTRIES);
 
+  console.log('  Fetching unemployment and debt...');
+  const [unemployment, debt] = await Promise.all([
+    fetchIndicator('SL.UEM.TOTL.ZS', COUNTRIES),
+    fetchIndicator('GC.DOD.TOTL.GD.ZS', COUNTRIES),
+  ]);
+
   const output = {
     updated: new Date().toISOString().slice(0, 10),
     gdp_per_capita: gdp,
     inflation,
     wages,
+    unemployment,
+    debt,
   };
 
   const outDir  = path.join(__dirname, '..', 'data');
