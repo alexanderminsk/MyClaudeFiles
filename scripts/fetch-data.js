@@ -112,9 +112,9 @@ async function main() {
   const wages = await fetchWages(COUNTRIES);
 
   console.log('  Fetching unemployment and debt...');
-  const [unemployment, debt] = await Promise.all([
-    fetchIndicator('SL.UEM.TOTL.ZS', COUNTRIES),
-    fetchIndicator('GC.DOD.TOTL.GD.ZS', COUNTRIES),
+  const [population, gini] = await Promise.all([
+    fetchIndicator('SP.POP.TOTL', COUNTRIES),
+    fetchIndicator('SI.POV.GINI', COUNTRIES),
   ]);
 
   const output = {
@@ -122,8 +122,8 @@ async function main() {
     gdp_per_capita: gdp,
     inflation,
     wages,
-    unemployment,
-    debt,
+    population,
+    gini,
   };
 
   const outDir  = path.join(__dirname, '..', 'data');
