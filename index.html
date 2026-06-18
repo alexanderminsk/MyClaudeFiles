@@ -80,7 +80,7 @@ header{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
 <header>
   <div class="header-left">
     <h1>Экономика региона</h1>
-    <p class="sub">ВВП, инфляция, зарплата, долг, безработица — Беларусь и соседние страны</p>
+    <p class="sub">ВВП, инфляция, зарплата, население, неравенство — Беларусь и соседние страны</p>
     <p class="upd" id="upd">Загрузка…</p>
   </div>
   <div class="header-right">
@@ -93,8 +93,8 @@ header{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
     <button class="tab on" data-t="gdp">ВВП на душу</button>
     <button class="tab" data-t="inf">Инфляция</button>
     <button class="tab" data-t="wage">Зарплата</button>
-    <button class="tab" data-t="unemp">Безработица</button>
-    <button class="tab" data-t="debt">Гос. долг</button>
+    <button class="tab" data-t="unemp">Население</button>
+    <button class="tab" data-t="debt">Индекс Джини</button>
     <button class="tab" data-t="scatter">Сравнение показателей</button>
     <button class="tab" data-t="rating">Рейтинг</button>
     <button class="tab" data-t="compare">Страна vs Страна</button>
@@ -180,10 +180,10 @@ header{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
     <div class="stat-grid" id="sg-unemp"></div>
     <div class="block">
       <div class="block-header">
-        <div class="block-title">Уровень безработицы (% рабочей силы)</div>
+        <div class="block-title">Население (млн человек)</div>
         <div class="block-actions"><button class="btn-sm" onclick="exportCSV('unemp')">↓ CSV</button></div>
       </div>
-      <div class="chart-box"><canvas id="c-unemp" role="img" aria-label="График безработицы">Данные загружаются</canvas></div>
+      <div class="chart-box"><canvas id="c-unemp" role="img" aria-label="График населения">Данные загружаются</canvas></div>
       <div class="legend" id="leg-unemp"></div>
     </div>
   </div>
@@ -193,10 +193,10 @@ header{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
     <div class="stat-grid" id="sg-debt"></div>
     <div class="block">
       <div class="block-header">
-        <div class="block-title">Государственный долг (% ВВП)</div>
+        <div class="block-title">Индекс Джини (неравенство доходов, 0–100)</div>
         <div class="block-actions"><button class="btn-sm" onclick="exportCSV('debt')">↓ CSV</button></div>
       </div>
-      <div class="chart-box"><canvas id="c-debt" role="img" aria-label="График гос. долга">Данные загружаются</canvas></div>
+      <div class="chart-box"><canvas id="c-debt" role="img" aria-label="График индекса Джини">Данные загружаются</canvas></div>
       <div class="legend" id="leg-debt"></div>
     </div>
   </div>
@@ -279,6 +279,7 @@ function isDark(){return document.body.classList.contains('dark');}
 function gc(){return isDark()?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)';}
 function tc(){return isDark()?'#777':'#999';}
 function fmt(n,dec=0){if(n==null||isNaN(n))return'—';return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:dec}).format(n);}
+function fmtPop(n){if(n==null||isNaN(n))return'—';return (n/1e6).toFixed(1)+' млн';}
 function lastVal(arr){return(arr||[]).filter(d=>d.value!=null).at(-1);}
 function prevVal(arr){const v=arr.filter(d=>d.value!=null);return v.length>=2?v[v.length-2]:null;}
 
@@ -597,8 +598,8 @@ function renderCompare(){
     {label:'ВВП на душу (USD)',series:DATA.gdp_per_capita,fmt:v=>fmt(v)+' $',higher:true},
     {label:'Инфляция (%)',series:DATA.inflation,fmt:v=>fmt(v,1)+'%',higher:false},
     {label:'Зарплата (USD/мес)',series:DATA.wages,fmt:v=>fmt(v)+' $',higher:true},
-    {label:'Безработица (%)',series:DATA.unemployment,fmt:v=>fmt(v,1)+'%',higher:false},
-    {label:'Гос. долг (% ВВП)',series:DATA.debt,fmt:v=>fmt(v,1)+'%',higher:false},
+    {label:'Население (млн)',series:DATA.population,fmt:v=>fmtPop(v),higher:true},
+    {label:'Джини (неравенство)',series:DATA.gini,fmt:v=>fmt(v,1),higher:false},
   ];
   document.getElementById('cmp-body').innerHTML=rows.map(r=>{
     if(!r.series)return`<tr><td style="color:var(--muted)">${r.label}</td><td>—</td><td>—</td></tr>`;
@@ -644,20 +645,20 @@ async function init(){
     document.getElementById('upd').textContent='Данные обновлены: '+(DATA.updated||'—');
 
     // Add placeholder data for new indicators if missing
-    if(!DATA.unemployment)DATA.unemployment={BY:[],PL:[],LT:[],LV:[],UA:[],RU:[]};
-    if(!DATA.debt)DATA.debt={BY:[],PL:[],LT:[],LV:[],UA:[],RU:[]};
+    if(!DATA.population)DATA.population={BY:[],PL:[],LT:[],LV:[],UA:[],RU:[]};
+    if(!DATA.gini)DATA.gini={BY:[],PL:[],LT:[],LV:[],UA:[],RU:[]};
 
     buildStats('sg-gdp',DATA.gdp_per_capita,v=>fmt(v)+' $',' $',0,true);
     buildStats('sg-inf',DATA.inflation,v=>fmt(v,1)+'%','%',1,false);
     buildStats('sg-wage',DATA.wages,v=>fmt(v)+' $/мес',' $/мес',0,true);
-    buildStats('sg-unemp',DATA.unemployment,v=>fmt(v,1)+'%','%',1,false);
-    buildStats('sg-debt',DATA.debt,v=>fmt(v,1)+'%','%',1,false);
+    buildStats('sg-unemp',DATA.population,v=>fmtPop(v),'',0,false);
+    buildStats('sg-debt',DATA.gini,v=>fmt(v,1),'',1,false);
 
     CHARTS.gdp=lineChart('c-gdp',DATA.gdp_per_capita,v=>fmt(v)+'$',false,false,true);
     CHARTS.inf=lineChart('c-inf',DATA.inflation,v=>fmt(v,1)+'%',false,false,true);
     CHARTS.wage=barChart('c-wage',DATA.wages,v=>fmt(v)+' $');
-    CHARTS.unemp=lineChart('c-unemp',DATA.unemployment,v=>fmt(v,1)+'%',false,false,false);
-    CHARTS.debt=lineChart('c-debt',DATA.debt,v=>fmt(v,1)+'%',false,false,false);
+    CHARTS.unemp=lineChart('c-unemp',DATA.population,v=>fmtPop(v),false,false,false);
+    CHARTS.debt=lineChart('c-debt',DATA.gini,v=>fmt(v,1),false,false,false);
 
     ['gdp','inf','wage','unemp','debt'].forEach(k=>buildLegend('leg-'+k,k));
     buildRating(DATA.gdp_per_capita,v=>fmt(v)+' $');
