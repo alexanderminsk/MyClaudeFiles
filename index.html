@@ -7,8 +7,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f5f4f1;--surface:#fff;--text:#1a1a18;--muted:#6b6b66;--border:rgba(0,0,0,0.07);--accent:#1d4ed8;--tag-bg:#f0efe9;--tag-text:#444}
-.dark{--bg:#111110;--surface:#1c1c1a;--text:#f0efe9;--muted:#888884;--border:rgba(255,255,255,0.07);--accent:#60a5fa;--tag-bg:#2a2a28;--tag-text:#ccc}
+:root{--bg:#f5f4f1;--surface:#fff;--text:#1a1a18;--muted:#6b6b66;--border:rgba(0,0,0,0.07);--accent:#1d4ed8;--accent2:#0f766e;--tag-bg:#f0efe9;--tag-text:#444}
+.dark{--bg:#111110;--surface:#1c1c1a;--text:#f0efe9;--muted:#888884;--border:rgba(255,255,255,0.07);--accent:#60a5fa;--accent2:#34d399;--tag-bg:#2a2a28;--tag-text:#ccc}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;transition:background .2s,color .2s}
 header{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
 .header-left h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;letter-spacing:-0.03em;line-height:1.1}
@@ -160,15 +160,28 @@ function buildStats(elId,series,fmtFn,showDiff){
   COUNTRIES.forEach(c=>{const last=lastVal(series[c.code]);const d=document.createElement('div');d.className='stat';let diff='';if(showDiff&&last&&byV&&c.code!=='BY'){const p=((last.value-byV.value)/byV.value*100);diff=`<div class="stat-diff" style="color:${p>0?'#0f766e':'#dc2626'}">${p>0?'+':''}${fmt(p,1)}% vs BY</div>`;}d.innerHTML=`<div class="stat-flag">${c.flag}</div><div class="stat-name">${c.name}</div><div class="stat-val" style="color:${c.color}">${last?fmtFn(last.value):'—'}</div><div class="stat-year">${last?last.year+' г.':''}</div>${diff}`;el.appendChild(d);});
 }
 function buildLegend(elId){document.getElementById(elId).innerHTML=COUNTRIES.map(c=>`<span><span class="ldot" style="background:${c.color}"></span>${c.flag} ${c.name}</span>`).join('');}
+const inlineLabelsPlugin={id:'inlineLabels',afterDatasetsDraw(chart){
+  if(!chart._showLabels)return;
+  const{ctx,data}=chart;
+  data.datasets.forEach((ds,di)=>{
+    const meta=chart.getDatasetMeta(di);if(meta.hidden)return;
+    meta.data.forEach((pt,pi)=>{
+      const v=ds.data[pi];if(v==null)return;
+      ctx.save();ctx.font='bold 9px -apple-system,sans-serif';ctx.fillStyle=ds.borderColor;ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(chart._fmtFn(v),pt.x,pt.y-6);ctx.restore();
+    });
+  });
+}};
+Chart.register(inlineLabelsPlugin);
 function lineChart(cid,series,fmtFn,showLabels){
   const years=[...new Set(Object.values(series).flat().map(d=>d.year))].sort();
-  return new Chart(document.getElementById(cid),{type:'line',data:{labels:years,datasets:COUNTRIES.map(c=>({label:c.name,data:years.map(y=>{const p=(series[c.code]||[]).find(d=>d.year===y);return p?.value??null;}),borderColor:c.color,backgroundColor:c.color+'12',tension:0.35,spanGaps:true,pointRadius:showLabels?3:2,borderWidth:2}))},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:showLabels?30:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${fmtFn(ctx.parsed.y)}`}},datalabels:showLabels?{display:true,font:{size:9,weight:'bold'},formatter:(v,ctx)=>v!=null?fmtFn(v):null,anchor:'top',align:'top',offset:2,color:ctx=>COUNTRIES[ctx.datasetIndex]?.color}:{display:false}},scales:{x:{grid:{color:gc()},ticks:{color:tc(),maxTicksLimit:9}},y:{grid:{color:gc()},ticks:{color:tc(),callback:v=>fmtFn(v)}}}}});
+  const ch=new Chart(document.getElementById(cid),{type:'line',data:{labels:years,datasets:COUNTRIES.map(c=>({label:c.name,data:years.map(y=>{const p=(series[c.code]||[]).find(d=>d.year===y);return p?.value??null;}),borderColor:c.color,backgroundColor:c.color+'12',tension:0.35,spanGaps:true,pointRadius:showLabels?3:2,borderWidth:2}))},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:showLabels?28:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${fmtFn(ctx.parsed.y)}`}}},scales:{x:{grid:{color:gc()},ticks:{color:tc(),maxTicksLimit:9}},y:{grid:{color:gc()},ticks:{color:tc(),callback:v=>fmtFn(v)}}}}});
+  ch._showLabels=showLabels;ch._fmtFn=fmtFn;return ch;
 }
 function barChart(cid,series,fmtFn){return new Chart(document.getElementById(cid),{type:'bar',data:{labels:COUNTRIES.map(c=>c.flag+' '+c.name),datasets:[{data:COUNTRIES.map(c=>{const l=lastVal(series[c.code]);return l?.value??null;}),backgroundColor:COUNTRIES.map(c=>c.color+'cc'),borderColor:COUNTRIES.map(c=>c.color),borderWidth:1,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${fmtFn(ctx.parsed.y)}`}}},scales:{x:{grid:{color:gc()},ticks:{color:tc()}},y:{grid:{color:gc()},ticks:{color:tc(),callback:v=>fmtFn(v)}}}}});}
 function toggleLabels(key){LABELS_ON[key]=!LABELS_ON[key];document.getElementById('labels-'+key+'-btn').classList.toggle('active',LABELS_ON[key]);if(CHARTS[key])CHARTS[key].destroy();const series=key==='gdp'?DATA.gdp_per_capita:DATA.inflation;const fmtFn=key==='gdp'?v=>fmt(v)+'$':v=>fmt(v,1)+'%';CHARTS[key]=lineChart('c-'+key,series,fmtFn,LABELS_ON[key]);}
 function buildRating(series,fmtFn){
   const sorted=COUNTRIES.map(c=>{const l=lastVal(series[c.code]);return{...c,val:l?.value??null};}).filter(c=>c.val!=null).sort((a,b)=>b.val-a.val);
-  const maxV=sorted[0]?.val||1;const byV=sorted.find(c=>c.code==='BY')?.val||1;
+  const maxV=sorted[0]?.val||1,byV=sorted.find(c=>c.code==='BY')?.val||1;
   document.getElementById('rating-gdp').innerHTML=sorted.map((c,i)=>`<div class="rating-row"><span class="rating-rank">${i+1}</span><span class="rating-flag">${c.flag}</span><span class="rating-name">${c.name}</span><div class="rating-bar-wrap"><div class="rating-bar" style="width:${(c.val/maxV*100).toFixed(1)}%;background:${c.color}"></div></div><span class="rating-val" style="color:${c.color}">${fmtFn(c.val)}</span></div>`).join('');
   document.getElementById('diff-by').innerHTML=sorted.filter(c=>c.code!=='BY').map(c=>{const p=((c.val-byV)/byV*100);return`<div class="rating-row"><span class="rating-flag">${c.flag}</span><span class="rating-name">${c.name}</span><span class="rating-val" style="color:${p>0?'#0f766e':'#dc2626'}">${p>0?'+':''}${fmt(p,1)}%</span></div>`;}).join('');
 }
@@ -176,8 +189,7 @@ function buildCompareSelects(){const opts=COUNTRIES.map(c=>`<option value="${c.c
 function renderCompare(){
   const ca=document.getElementById('cmp-a').value,cb=document.getElementById('cmp-b').value;
   const cA=COUNTRIES.find(c=>c.code===ca),cB=COUNTRIES.find(c=>c.code===cb);
-  document.getElementById('cmp-ha').textContent=cA.flag+' '+cA.name;
-  document.getElementById('cmp-hb').textContent=cB.flag+' '+cB.name;
+  document.getElementById('cmp-ha').textContent=cA.flag+' '+cA.name;document.getElementById('cmp-hb').textContent=cB.flag+' '+cB.name;
   const rows=[{label:'ВВП на душу (USD)',series:DATA.gdp_per_capita,fmt:v=>fmt(v)+' $',higher:true},{label:'Инфляция (%)',series:DATA.inflation,fmt:v=>fmt(v,1)+'%',higher:false},{label:'Зарплата (USD/мес)',series:DATA.wages,fmt:v=>fmt(v)+' $',higher:true}];
   document.getElementById('cmp-body').innerHTML=rows.map(r=>{const lA=lastVal(r.series[ca]),lB=lastVal(r.series[cb]),vA=lA?.value,vB=lB?.value,aW=vA!=null&&vB!=null&&(r.higher?vA>vB:vA<vB),bW=vA!=null&&vB!=null&&(r.higher?vB>vA:vB<vA);return`<tr><td style="color:var(--muted)">${r.label}</td><td class="${aW?'win':bW?'lose':''}">${vA!=null?r.fmt(vA):'—'}</td><td class="${bW?'win':aW?'lose':''}">${vB!=null?r.fmt(vB):'—'}</td></tr>`;}).join('');
 }
