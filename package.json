@@ -1,0 +1,12 @@
+{
+  "name": "regional-stats",
+  "version": "1.0.0",
+  "description": "Economic statistics dashboard — Belarus and neighboring countries",
+  "scripts": {
+    "fetch": "node scripts/fetch-data.js",
+    "dev": "npx serve . -p 3000"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

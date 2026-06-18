@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Экономика региона — ВВП, инфляция, зарплата</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f7f6f3;
+      --surface: #ffffff;
+      --text: #1a1a18;
+      --muted: #6b6b66;
+      --border: rgba(0,0,0,0.08);
+      --accent: #1d4ed8;
+      --accent2: #0f766e;
+      --accent3: #b45309;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #161614;
+        --surface: #1f1f1d;
+        --text: #f0efe9;
+        --muted: #9a9a94;
+        --border: rgba(255,255,255,0.08);
+        --accent: #60a5fa;
+        --accent2: #34d399;
+        --accent3: #fbbf24;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      padding: 2.5rem 2rem 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    header p {
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+    }
+    #updated {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+    .tabs {
+      display: flex;
+      gap: 0.25rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 0.6rem 1.1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab-btn.active {
+      color: var(--text);
+      border-bottom-color: var(--text);
+      font-weight: 500;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+    }
+    .card .flag { font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .card .country { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .card .value { font-size: 1.5rem; font-weight: 600; margin-top: 0.15rem; line-height: 1.2; }
+    .card .year { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .chart-wrap {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .chart-title {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 1rem;
+    }
+    .chart-canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 300px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .legend span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .source {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 0.5px solid var(--border);
+    }
+    .error-msg {
+      background: #fef2f2;
+      border: 0.5px solid #fca5a5;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      color: #991b1b;
+      font-size: 0.9rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .error-msg { background: #2d1515; border-color: #7f1d1d; color: #fca5a5; }
+    }
+    @media (max-width: 600px) {
+      header, .container { padding-left: 1rem; padding-right: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Экономика региона</h1>
+  <p>ВВП, инфляция и средняя зарплата — Беларусь и соседние страны</p>
+  <div id="updated">Загрузка данных…</div>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="gdp">ВВП на душу</button>
+    <button class="tab-btn" data-tab="inflation">Инфляция</button>
+    <button class="tab-btn" data-tab="wages">Средняя зарплата</button>
+  </div>
+
+  <!-- GDP -->
+  <div class="tab-panel active" id="tab-gdp">
+    <div class="cards" id="cards-gdp"></div>
+    <div class="chart-wrap">
+      <div class="chart-title">ВВП на душу населения (USD, текущие цены)</div>
+      <div class="chart-canvas-wrap">
+        <canvas id="chart-gdp" role="img" aria-label="Линейный график ВВП на душу населения по странам региона">Данные загружаются…</canvas>
+      </div>
+      <div class="legend" id="legend-gdp"></div>
+    </div>
+  </div>
+
+  <!-- Inflation -->
+  <div class="tab-panel" id="tab-inflation">
+    <div class="cards" id="cards-inflation"></div>
+    <div class="chart-wrap">
+      <div class="chart-title">Инфляция — индекс потребительских цен (%, г/г)</div>
+      <div class="chart-canvas-wrap">
+        <canvas id="chart-inflation" role="img" aria-label="Линейный график инфляции по странам региона">Данные загружаются…</canvas>
+      </div>
+      <div class="legend" id="legend-inflation"></div>
+    </div>
+  </div>
+
+  <!-- Wages -->
+  <div class="tab-panel" id="tab-wages">
+    <div class="cards" id="cards-wages"></div>
+    <div class="chart-wrap">
+      <div class="chart-title">Средняя зарплата (USD в месяц, пересчёт по курсу)</div>
+      <div class="chart-canvas-wrap">
+        <canvas id="chart-wages" role="img" aria-label="Столбчатый график средней зарплаты по странам">Данные загружаются…</canvas>
+      </div>
+      <div class="legend" id="legend-wages"></div>
+    </div>
+    <p style="font-size:0.8rem; color:var(--muted); margin-top:0.75rem;">
+      * Зарплата — из компенсации работникам (World Bank) или официальных данных нацстатистик. Приблизительный показатель.
+    </p>
+  </div>
+
+  <div class="source">
+    Источник данных: <a href="https://data.worldbank.org" target="_blank" rel="noopener" style="color:var(--accent)">World Bank Open Data</a>
+    (NY.GDP.PCAP.CD, FP.CPI.TOTL.ZG, данные по зарплатам). Обновляется автоматически через GitHub Actions.
+  </div>
+</div>
+
+<script>
+const COUNTRIES = [
+  { code: 'BY', name: 'Беларусь',  flag: '🇧🇾', color: '#dc2626' },
+  { code: 'PL', name: 'Польша',    flag: '🇵🇱', color: '#1d4ed8' },
+  { code: 'LT', name: 'Литва',     flag: '🇱🇹', color: '#0f766e' },
+  { code: 'LV', name: 'Латвия',    flag: '🇱🇻', color: '#7c3aed' },
+  { code: 'UA', name: 'Украина',   flag: '🇺🇦', color: '#b45309' },
+  { code: 'RU', name: 'Россия',    flag: '🇷🇺', color: '#6b7280' },
+];
+
+const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const gridColor = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
+const tickColor = isDark ? '#9a9a94' : '#6b6b66';
+
+function fmt(n, dec=0) {
+  if (n == null || isNaN(n)) return '—';
+  return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: dec }).format(n);
+}
+
+function buildCards(containerId, dataByCountry, format) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  COUNTRIES.forEach(c => {
+    const series = dataByCountry[c.code] || [];
+    const last = series.filter(d => d.value != null).at(-1);
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="flag">${c.flag}</div>
+      <div class="country">${c.name}</div>
+      <div class="value" style="color:${c.color}">${last ? format(last.value) : '—'}</div>
+      <div class="year">${last ? last.year + ' г.' : 'нет данных'}</div>
+    `;
+    el.appendChild(div);
+  });
+}
+
+function buildLegend(containerId) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = COUNTRIES.map(c =>
+    `<span><span class="legend-dot" style="background:${c.color}"></span>${c.flag} ${c.name}</span>`
+  ).join('');
+}
+
+function buildLineChart(canvasId, dataByCountry, yLabel, tooltipFmt) {
+  const canvas = document.getElementById(canvasId);
+  const allYears = [...new Set(
+    Object.values(dataByCountry).flat().map(d => d.year)
+  )].sort();
+
+  return new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: allYears,
+      datasets: COUNTRIES.map(c => ({
+        label: c.name,
+        data: allYears.map(y => {
+          const pt = (dataByCountry[c.code] || []).find(d => d.year === y);
+          return pt?.value ?? null;
+        }),
+        borderColor: c.color,
+        backgroundColor: c.color + '18',
+        tension: 0.3,
+        spanGaps: true,
+        pointRadius: 3,
+        borderWidth: 2,
+      }))
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${tooltipFmt(ctx.parsed.y)}`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: gridColor }, ticks: { color: tickColor, maxTicksLimit: 10 } },
+        y: {
+          grid: { color: gridColor },
+          ticks: { color: tickColor, callback: v => tooltipFmt(v) },
+          title: { display: false }
+        }
+      }
+    }
+  });
+}
+
+function buildBarChart(canvasId, dataByCountry) {
+  const canvas = document.getElementById(canvasId);
+  const allYears = [...new Set(
+    Object.values(dataByCountry).flat().map(d => d.year)
+  )].sort();
+  const latestYear = allYears.at(-1);
+
+  return new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: COUNTRIES.map(c => c.flag + ' ' + c.name),
+      datasets: [{
+        label: latestYear,
+        data: COUNTRIES.map(c => {
+          const last = (dataByCountry[c.code] || []).filter(d => d.value != null).at(-1);
+          return last?.value ?? null;
+        }),
+        backgroundColor: COUNTRIES.map(c => c.color + 'cc'),
+        borderColor: COUNTRIES.map(c => c.color),
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${fmt(ctx.parsed.y)} USD/мес` } }
+      },
+      scales: {
+        x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+        y: {
+          grid: { color: gridColor },
+          ticks: { color: tickColor, callback: v => fmt(v) + ' $' }
+        }
+      }
+    }
+  });
+}
+
+async function loadData() {
+  try {
+    const res = await fetch('data/stats.json');
+    if (!res.ok) throw new Error('Файл данных не найден');
+    const data = await res.json();
+
+    document.getElementById('updated').textContent =
+      'Данные обновлены: ' + (data.updated || 'неизвестно');
+
+    buildCards('cards-gdp',       data.gdp_per_capita, v => fmt(v) + ' $');
+    buildCards('cards-inflation',  data.inflation,      v => fmt(v, 1) + '%');
+    buildCards('cards-wages',      data.wages,          v => fmt(v) + ' $/мес');
+
+    buildLineChart('chart-gdp',       data.gdp_per_capita, 'USD', v => fmt(v) + '$');
+    buildLineChart('chart-inflation', data.inflation,      '%',   v => fmt(v, 1) + '%');
+    buildBarChart('chart-wages',      data.wages);
+
+    buildLegend('legend-gdp');
+    buildLegend('legend-inflation');
+    buildLegend('legend-wages');
+
+  } catch (e) {
+    document.getElementById('updated').textContent = 'Ошибка загрузки данных';
+    console.error(e);
+    document.querySelectorAll('.chart-wrap').forEach(el => {
+      el.innerHTML = `<div class="error-msg">Данные не загружены. Запустите <code>node scripts/fetch-data.js</code> или GitHub Actions.</div>`;
+    });
+  }
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+loadData();
+</script>
+</body>
+</html>
