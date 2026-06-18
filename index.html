@@ -36,8 +36,9 @@ header{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
 .btn-sm:hover{background:var(--border)}
 .btn-sm.active{background:var(--text);color:var(--bg)}
 .chart-box{position:relative;width:100%;height:260px}
-.legend{display:flex;flex-wrap:wrap;gap:9px;margin-top:0.75rem;font-size:0.73rem;color:var(--muted)}
-.legend span{display:flex;align-items:center;gap:4px}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.75rem;font-size:0.73rem;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:4px;cursor:pointer;padding:3px 6px;border-radius:5px;transition:opacity .15s,background .15s;user-select:none}
+.legend span:hover{background:var(--tag-bg)}
 .ldot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
 .rating-list{display:flex;flex-direction:column;gap:6px}
 .rating-row{display:flex;align-items:center;gap:10px;padding:0.6rem 0.75rem;background:var(--tag-bg);border-radius:8px}
@@ -159,7 +160,30 @@ function buildStats(elId,series,fmtFn,showDiff){
   const byV=lastVal(series['BY']);
   COUNTRIES.forEach(c=>{const last=lastVal(series[c.code]);const d=document.createElement('div');d.className='stat';let diff='';if(showDiff&&last&&byV&&c.code!=='BY'){const p=((last.value-byV.value)/byV.value*100);diff=`<div class="stat-diff" style="color:${p>0?'#0f766e':'#dc2626'}">${p>0?'+':''}${fmt(p,1)}% vs BY</div>`;}d.innerHTML=`<div class="stat-flag">${c.flag}</div><div class="stat-name">${c.name}</div><div class="stat-val" style="color:${c.color}">${last?fmtFn(last.value):'—'}</div><div class="stat-year">${last?last.year+' г.':''}</div>${diff}`;el.appendChild(d);});
 }
-function buildLegend(elId){document.getElementById(elId).innerHTML=COUNTRIES.map(c=>`<span><span class="ldot" style="background:${c.color}"></span>${c.flag} ${c.name}</span>`).join('');}
+function buildLegend(elId,chartKey){
+  const el=document.getElementById(elId);
+  const items=COUNTRIES.map((c,i)=>`<span class="leg-item" data-idx="${i}" data-chart="${chartKey}"><span class="ldot" style="background:${c.color}"></span>${c.flag} ${c.name}</span>`).join('');
+  const reset=chartKey?`<span class="leg-item leg-reset-btn" data-chart="${chartKey}" style="margin-left:auto;color:var(--muted);font-size:0.7rem">Все</span>`:'';
+  el.innerHTML=items+reset;
+  el.querySelectorAll('.leg-item:not(.leg-reset-btn)').forEach(item=>{
+    item.addEventListener('click',()=>{
+      const ch=CHARTS[item.dataset.chart];if(!ch)return;
+      const idx=parseInt(item.dataset.idx);
+      const meta=ch.getDatasetMeta(idx);
+      meta.hidden=!meta.hidden;
+      item.style.opacity=meta.hidden?'0.3':'1';
+      item.style.textDecoration=meta.hidden?'line-through':'none';
+      ch.update();
+    });
+  });
+  const resetBtn=el.querySelector('.leg-reset-btn');
+  if(resetBtn)resetBtn.addEventListener('click',()=>{
+    const ch=CHARTS[resetBtn.dataset.chart];if(!ch)return;
+    ch.data.datasets.forEach((_,i)=>{ch.getDatasetMeta(i).hidden=false;});
+    el.querySelectorAll('.leg-item:not(.leg-reset-btn)').forEach(item=>{item.style.opacity='1';item.style.textDecoration='none';});
+    ch.update();
+  });
+}
 const inlineLabelsPlugin={id:'inlineLabels',afterDatasetsDraw(chart){
   if(!chart._showLabels)return;
   const{ctx,data}=chart;
@@ -178,7 +202,15 @@ function lineChart(cid,series,fmtFn,showLabels){
   ch._showLabels=showLabels;ch._fmtFn=fmtFn;return ch;
 }
 function barChart(cid,series,fmtFn){return new Chart(document.getElementById(cid),{type:'bar',data:{labels:COUNTRIES.map(c=>c.flag+' '+c.name),datasets:[{data:COUNTRIES.map(c=>{const l=lastVal(series[c.code]);return l?.value??null;}),backgroundColor:COUNTRIES.map(c=>c.color+'cc'),borderColor:COUNTRIES.map(c=>c.color),borderWidth:1,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${fmtFn(ctx.parsed.y)}`}}},scales:{x:{grid:{color:gc()},ticks:{color:tc()}},y:{grid:{color:gc()},ticks:{color:tc(),callback:v=>fmtFn(v)}}}}});}
-function toggleLabels(key){LABELS_ON[key]=!LABELS_ON[key];document.getElementById('labels-'+key+'-btn').classList.toggle('active',LABELS_ON[key]);if(CHARTS[key])CHARTS[key].destroy();const series=key==='gdp'?DATA.gdp_per_capita:DATA.inflation;const fmtFn=key==='gdp'?v=>fmt(v)+'$':v=>fmt(v,1)+'%';CHARTS[key]=lineChart('c-'+key,series,fmtFn,LABELS_ON[key]);}
+function toggleLabels(key){
+  LABELS_ON[key]=!LABELS_ON[key];
+  document.getElementById('labels-'+key+'-btn').classList.toggle('active',LABELS_ON[key]);
+  if(CHARTS[key])CHARTS[key].destroy();
+  const series=key==='gdp'?DATA.gdp_per_capita:DATA.inflation;
+  const fmtFn=key==='gdp'?v=>fmt(v)+'$':v=>fmt(v,1)+'%';
+  CHARTS[key]=lineChart('c-'+key,series,fmtFn,LABELS_ON[key]);
+  buildLegend('leg-'+key,key);
+}
 function buildRating(series,fmtFn){
   const sorted=COUNTRIES.map(c=>{const l=lastVal(series[c.code]);return{...c,val:l?.value??null};}).filter(c=>c.val!=null).sort((a,b)=>b.val-a.val);
   const maxV=sorted[0]?.val||1,byV=sorted.find(c=>c.code==='BY')?.val||1;
@@ -195,7 +227,22 @@ function renderCompare(){
 }
 function exportCSV(key){const series=key==='gdp'?DATA.gdp_per_capita:key==='inf'?DATA.inflation:DATA.wages;const years=[...new Set(Object.values(series).flat().map(d=>d.year))].sort();let csv='Год,'+COUNTRIES.map(c=>c.name).join(',')+'\n';years.forEach(y=>{csv+=y+','+COUNTRIES.map(c=>{const p=(series[c.code]||[]).find(d=>d.year===y);return p?.value??'';}).join(',')+'\n';});const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='stats-'+key+'.csv';a.click();}
 document.querySelectorAll('.tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));['gdp','inf','wage','rating','compare'].forEach(t=>document.getElementById('pane-'+t).style.display='none');btn.classList.add('on');document.getElementById('pane-'+btn.dataset.t).style.display='';if(btn.dataset.t==='compare')renderCompare();});});
-async function init(){try{const res=await fetch('data/stats.json');if(!res.ok)throw new Error();DATA=await res.json();document.getElementById('upd').textContent='Данные обновлены: '+(DATA.updated||'—');buildStats('sg-gdp',DATA.gdp_per_capita,v=>fmt(v)+' $',true);buildStats('sg-inf',DATA.inflation,v=>fmt(v,1)+'%',false);buildStats('sg-wage',DATA.wages,v=>fmt(v)+' $/мес',true);buildLegend('leg-gdp');buildLegend('leg-inf');buildLegend('leg-wage');CHARTS.gdp=lineChart('c-gdp',DATA.gdp_per_capita,v=>fmt(v)+'$',false);CHARTS.inf=lineChart('c-inf',DATA.inflation,v=>fmt(v,1)+'%',false);CHARTS.wage=barChart('c-wage',DATA.wages,v=>fmt(v)+' $');buildRating(DATA.gdp_per_capita,v=>fmt(v)+' $');buildCompareSelects();}catch(e){document.getElementById('upd').textContent='Ошибка загрузки данных';console.error(e);}}
+async function init(){
+  try{
+    const res=await fetch('data/stats.json');if(!res.ok)throw new Error();
+    DATA=await res.json();
+    document.getElementById('upd').textContent='Данные обновлены: '+(DATA.updated||'—');
+    buildStats('sg-gdp',DATA.gdp_per_capita,v=>fmt(v)+' $',true);
+    buildStats('sg-inf',DATA.inflation,v=>fmt(v,1)+'%',false);
+    buildStats('sg-wage',DATA.wages,v=>fmt(v)+' $/мес',true);
+    CHARTS.gdp=lineChart('c-gdp',DATA.gdp_per_capita,v=>fmt(v)+'$',false);
+    CHARTS.inf=lineChart('c-inf',DATA.inflation,v=>fmt(v,1)+'%',false);
+    CHARTS.wage=barChart('c-wage',DATA.wages,v=>fmt(v)+' $');
+    buildLegend('leg-gdp','gdp');buildLegend('leg-inf','inf');buildLegend('leg-wage','wage');
+    buildRating(DATA.gdp_per_capita,v=>fmt(v)+' $');
+    buildCompareSelects();
+  }catch(e){document.getElementById('upd').textContent='Ошибка загрузки данных';console.error(e);}
+}
 init();
 </script>
 </body>
