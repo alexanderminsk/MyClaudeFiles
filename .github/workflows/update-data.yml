@@ -31,10 +31,9 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
           git add data/stats.json
           git commit -m "chore: update economic data $(date +%Y-%m-%d)"
-          git push
+          git push --force
 
       - name: No changes
         if: steps.diff.outputs.changed == 'false'
