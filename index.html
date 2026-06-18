@@ -7,39 +7,49 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f5f4f1;--surface:#fff;--text:#1a1a18;--muted:#6b6b66;--border:rgba(0,0,0,0.07);--accent:#1d4ed8;--accent2:#0f766e;--tag-bg:#f0efe9;--tag-text:#444}
-.dark{--bg:#111110;--surface:#1c1c1a;--text:#f0efe9;--muted:#888884;--border:rgba(255,255,255,0.07);--accent:#60a5fa;--accent2:#34d399;--tag-bg:#2a2a28;--tag-text:#ccc}
+:root{--bg:#f5f4f1;--surface:#fff;--text:#1a1a18;--muted:#6b6b66;--border:rgba(0,0,0,0.07);--accent:#1d4ed8;--tag-bg:#f0efe9;--tag-text:#444;--green:#0f766e;--red:#dc2626}
+.dark{--bg:#111110;--surface:#1c1c1a;--text:#f0efe9;--muted:#888884;--border:rgba(255,255,255,0.07);--accent:#60a5fa;--tag-bg:#2a2a28;--tag-text:#ccc;--green:#34d399;--red:#f87171}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;transition:background .2s,color .2s}
-header{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+header{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
 .header-left h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;letter-spacing:-0.03em;line-height:1.1}
 .header-left .sub{color:var(--muted);margin-top:0.3rem;font-size:0.88rem}
 .header-left .upd{font-size:0.72rem;color:var(--muted);margin-top:0.15rem;opacity:.7}
-.theme-btn{background:var(--surface);border:0.5px solid var(--border);border-radius:8px;padding:0.45rem 0.85rem;font-size:0.82rem;color:var(--muted);cursor:pointer;white-space:nowrap;margin-top:0.25rem}
-.theme-btn:hover{color:var(--text)}
-.container{max-width:1080px;margin:0 auto;padding:0 1.5rem 4rem}
+.header-right{display:flex;gap:8px;flex-wrap:wrap;margin-top:0.25rem}
+.theme-btn,.hdr-btn{background:var(--surface);border:0.5px solid var(--border);border-radius:8px;padding:0.4rem 0.8rem;font-size:0.8rem;color:var(--muted);cursor:pointer;white-space:nowrap}
+.theme-btn:hover,.hdr-btn:hover{color:var(--text)}
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem 4rem}
 .tabs{display:flex;border-bottom:0.5px solid var(--border);margin:1.5rem 0 1.25rem;flex-wrap:wrap}
 .tab{background:none;border:none;padding:0.5rem 1rem;font-size:0.85rem;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
 .tab.on{color:var(--text);border-bottom-color:var(--text);font-weight:500}
 .tab:hover{color:var(--text)}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px;margin-bottom:1.1rem}
-.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:0.9rem 1rem}
-.stat-flag{font-size:1.5rem;margin-bottom:0.25rem}
+.controls{display:flex;align-items:center;gap:12px;margin-bottom:1rem;flex-wrap:wrap}
+.controls label{font-size:0.78rem;color:var(--muted);white-space:nowrap}
+.year-range{display:flex;align-items:center;gap:8px;flex:1;min-width:200px}
+.year-range input[type=range]{flex:1;height:3px;accent-color:var(--accent)}
+.year-label{font-size:0.75rem;font-weight:600;min-width:36px;text-align:center;color:var(--text)}
+.stat-grid{display:flex;gap:9px;margin-bottom:1.1rem;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:0.9rem 1rem;min-width:150px;flex:1}
+.stat-flag{font-size:1.4rem;margin-bottom:0.2rem}
 .stat-name{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em}
-.stat-val{font-size:1.9rem;font-weight:700;line-height:1.05;margin-top:0.1rem;letter-spacing:-0.02em}
-.stat-year{font-size:0.68rem;color:var(--muted);margin-top:0.15rem}
-.stat-diff{font-size:0.72rem;margin-top:0.15rem;font-weight:500}
+.stat-val{font-size:1.8rem;font-weight:700;line-height:1.05;margin-top:0.1rem;letter-spacing:-0.02em}
+.stat-year{font-size:0.68rem;color:var(--muted);margin-top:0.1rem}
+.stat-diff{font-size:0.72rem;margin-top:0.1rem;font-weight:500}
+.stat-trend{font-size:0.72rem;margin-top:0.1rem;display:flex;align-items:center;gap:3px}
+.sparkline{margin-top:6px}
 .block{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1rem}
 .block-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:0.75rem;flex-wrap:wrap}
 .block-title{font-size:0.7rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em}
 .block-actions{display:flex;gap:6px;flex-wrap:wrap}
-.btn-sm{background:var(--tag-bg);border:0.5px solid var(--border);border-radius:6px;padding:0.3rem 0.7rem;font-size:0.75rem;color:var(--tag-text);cursor:pointer;transition:background .15s}
-.btn-sm:hover{background:var(--border)}
+.btn-sm{background:var(--tag-bg);border:0.5px solid var(--border);border-radius:6px;padding:0.28rem 0.65rem;font-size:0.75rem;color:var(--tag-text);cursor:pointer;transition:background .15s}
+.btn-sm:hover{opacity:.8}
 .btn-sm.active{background:var(--text);color:var(--bg)}
-.chart-box{position:relative;width:100%;height:260px}
-.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.75rem;font-size:0.73rem;color:var(--muted)}
-.legend span{display:flex;align-items:center;gap:4px;cursor:pointer;padding:3px 6px;border-radius:5px;transition:opacity .15s,background .15s;user-select:none}
+.chart-box{position:relative;width:100%;height:280px}
+.legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:0.75rem;font-size:0.73rem;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:4px;cursor:pointer;padding:3px 7px;border-radius:5px;transition:opacity .15s,background .15s;user-select:none}
 .legend span:hover{background:var(--tag-bg)}
 .ldot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.annotation-line{position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.15);pointer-events:none}
+.dark .annotation-line{background:rgba(255,255,255,.15)}
 .rating-list{display:flex;flex-direction:column;gap:6px}
 .rating-row{display:flex;align-items:center;gap:10px;padding:0.6rem 0.75rem;background:var(--tag-bg);border-radius:8px}
 .rating-rank{font-size:0.75rem;color:var(--muted);width:18px;flex-shrink:0;text-align:right}
@@ -47,18 +57,22 @@ header{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
 .rating-name{font-size:0.85rem;font-weight:500;flex:1}
 .rating-bar-wrap{flex:2;background:var(--border);border-radius:4px;height:6px;overflow:hidden}
 .rating-bar{height:6px;border-radius:4px}
-.rating-val{font-size:0.82rem;font-weight:600;min-width:70px;text-align:right}
+.rating-val{font-size:0.82rem;font-weight:600;min-width:80px;text-align:right}
 .cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
 .cmp-select{background:var(--surface);border:0.5px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;font-size:0.82rem;color:var(--text);width:100%;cursor:pointer}
 .cmp-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:0.75rem}
 .cmp-table th{text-align:left;padding:0.4rem 0.5rem;color:var(--muted);font-weight:500;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;border-bottom:0.5px solid var(--border)}
 .cmp-table td{padding:0.5rem 0.5rem;border-bottom:0.5px solid var(--border)}
 .cmp-table tr:last-child td{border-bottom:none}
-.win{color:#0f766e;font-weight:600}
-.lose{color:#dc2626;font-weight:600}
+.win{color:var(--green);font-weight:600}
+.lose{color:var(--red);font-weight:600}
 .note{font-size:0.73rem;color:var(--muted);margin-top:0.6rem}
 .source{font-size:0.7rem;color:var(--muted);margin-top:1.5rem;padding-top:1rem;border-top:0.5px solid var(--border)}
 .source a{color:var(--accent);text-decoration:none}
+.kbd{display:inline-block;background:var(--tag-bg);border:0.5px solid var(--border);border-radius:4px;padding:1px 5px;font-size:0.68rem;color:var(--muted);font-family:monospace}
+.shortcuts{display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;font-size:0.75rem;color:var(--muted)}
+.ppp-toggle{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--muted)}
+.ppp-toggle input{accent-color:var(--accent)}
 @media(max-width:600px){header,.container{padding-left:1rem;padding-right:1rem}.stat-val{font-size:1.5rem}.cmp-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -66,59 +80,138 @@ header{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
 <header>
   <div class="header-left">
     <h1>Экономика региона</h1>
-    <p class="sub">ВВП, инфляция и средняя зарплата — Беларусь и соседние страны</p>
+    <p class="sub">ВВП, инфляция, зарплата, долг, безработица — Беларусь и соседние страны</p>
     <p class="upd" id="upd">Загрузка…</p>
   </div>
-  <button class="theme-btn" id="theme-btn">🌙 Тёмная тема</button>
+  <div class="header-right">
+    <button class="hdr-btn" onclick="exportPNG()">↓ PNG</button>
+    <button class="theme-btn" id="theme-btn">🌙 Тёмная</button>
+  </div>
 </header>
 <div class="container">
   <div class="tabs">
     <button class="tab on" data-t="gdp">ВВП на душу</button>
     <button class="tab" data-t="inf">Инфляция</button>
     <button class="tab" data-t="wage">Зарплата</button>
+    <button class="tab" data-t="unemp">Безработица</button>
+    <button class="tab" data-t="debt">Гос. долг</button>
+    <button class="tab" data-t="scatter">Сравнение показателей</button>
     <button class="tab" data-t="rating">Рейтинг</button>
-    <button class="tab" data-t="compare">Сравнение</button>
+    <button class="tab" data-t="compare">Страна vs Страна</button>
   </div>
+
+  <!-- GDP -->
   <div id="pane-gdp">
+    <div class="controls">
+      <div class="year-range">
+        <span class="year-label" id="yr-from-gdp">2005</span>
+        <input type="range" id="range-from-gdp" min="2005" max="2023" value="2005" step="1">
+        <span>—</span>
+        <input type="range" id="range-to-gdp" min="2005" max="2024" value="2024" step="1">
+        <span class="year-label" id="yr-to-gdp">2024</span>
+      </div>
+      <label class="ppp-toggle"><input type="checkbox" id="ppp-toggle"> ППС</label>
+      <div class="block-actions">
+        <button class="btn-sm" id="log-gdp-btn" onclick="toggleLog('gdp')">Лог</button>
+        <button class="btn-sm" id="norm-gdp-btn" onclick="toggleNorm('gdp')">Норм.</button>
+        <button class="btn-sm" id="labels-gdp-btn" onclick="toggleLabels('gdp')">Подписи</button>
+        <button class="btn-sm" onclick="exportCSV('gdp')">↓ CSV</button>
+      </div>
+    </div>
     <div class="stat-grid" id="sg-gdp"></div>
     <div class="block">
       <div class="block-header">
-        <div class="block-title">Динамика ВВП на душу населения (USD)</div>
-        <div class="block-actions">
-          <button class="btn-sm" id="labels-gdp-btn" onclick="toggleLabels('gdp')">Подписи</button>
-          <button class="btn-sm" onclick="exportCSV('gdp')">↓ CSV</button>
-        </div>
+        <div class="block-title">ВВП на душу населения (USD)</div>
       </div>
       <div class="chart-box"><canvas id="c-gdp" role="img" aria-label="График ВВП">Данные загружаются</canvas></div>
       <div class="legend" id="leg-gdp"></div>
     </div>
   </div>
+
+  <!-- Inflation -->
   <div id="pane-inf" style="display:none">
+    <div class="controls">
+      <div class="year-range">
+        <span class="year-label" id="yr-from-inf">2005</span>
+        <input type="range" id="range-from-inf" min="2005" max="2023" value="2005" step="1">
+        <span>—</span>
+        <input type="range" id="range-to-inf" min="2005" max="2024" value="2024" step="1">
+        <span class="year-label" id="yr-to-inf">2024</span>
+      </div>
+      <div class="block-actions">
+        <button class="btn-sm" id="log-inf-btn" onclick="toggleLog('inf')">Лог</button>
+        <button class="btn-sm" id="labels-inf-btn" onclick="toggleLabels('inf')">Подписи</button>
+        <button class="btn-sm" onclick="exportCSV('inf')">↓ CSV</button>
+      </div>
+    </div>
     <div class="stat-grid" id="sg-inf"></div>
     <div class="block">
-      <div class="block-header">
-        <div class="block-title">Инфляция — индекс потребительских цен (%, г/г)</div>
-        <div class="block-actions">
-          <button class="btn-sm" id="labels-inf-btn" onclick="toggleLabels('inf')">Подписи</button>
-          <button class="btn-sm" onclick="exportCSV('inf')">↓ CSV</button>
-        </div>
-      </div>
+      <div class="block-header"><div class="block-title">Инфляция ИПЦ (%, год к году)</div></div>
       <div class="chart-box"><canvas id="c-inf" role="img" aria-label="График инфляции">Данные загружаются</canvas></div>
       <div class="legend" id="leg-inf"></div>
     </div>
   </div>
+
+  <!-- Wages -->
   <div id="pane-wage" style="display:none">
+    <div class="controls">
+      <div class="year-range">
+        <span class="year-label" id="yr-from-wage">2010</span>
+        <input type="range" id="range-from-wage" min="2010" max="2022" value="2010" step="1">
+        <span>—</span>
+        <input type="range" id="range-to-wage" min="2010" max="2024" value="2024" step="1">
+        <span class="year-label" id="yr-to-wage">2024</span>
+      </div>
+      <div class="block-actions">
+        <button class="btn-sm" onclick="exportCSV('wage')">↓ CSV</button>
+      </div>
+    </div>
     <div class="stat-grid" id="sg-wage"></div>
     <div class="block">
-      <div class="block-header">
-        <div class="block-title">Средняя зарплата (USD/мес, оценка)</div>
-        <div class="block-actions"><button class="btn-sm" onclick="exportCSV('wage')">↓ CSV</button></div>
-      </div>
+      <div class="block-header"><div class="block-title">Средняя зарплата (USD/мес, оценка)</div></div>
       <div class="chart-box"><canvas id="c-wage" role="img" aria-label="График зарплат">Данные загружаются</canvas></div>
       <div class="legend" id="leg-wage"></div>
     </div>
     <p class="note">* Приблизительный показатель на основе World Bank.</p>
   </div>
+
+  <!-- Unemployment -->
+  <div id="pane-unemp" style="display:none">
+    <div class="stat-grid" id="sg-unemp"></div>
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Уровень безработицы (% рабочей силы)</div>
+        <div class="block-actions"><button class="btn-sm" onclick="exportCSV('unemp')">↓ CSV</button></div>
+      </div>
+      <div class="chart-box"><canvas id="c-unemp" role="img" aria-label="График безработицы">Данные загружаются</canvas></div>
+      <div class="legend" id="leg-unemp"></div>
+    </div>
+  </div>
+
+  <!-- Debt -->
+  <div id="pane-debt" style="display:none">
+    <div class="stat-grid" id="sg-debt"></div>
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Государственный долг (% ВВП)</div>
+        <div class="block-actions"><button class="btn-sm" onclick="exportCSV('debt')">↓ CSV</button></div>
+      </div>
+      <div class="chart-box"><canvas id="c-debt" role="img" aria-label="График гос. долга">Данные загружаются</canvas></div>
+      <div class="legend" id="leg-debt"></div>
+    </div>
+  </div>
+
+  <!-- Scatter -->
+  <div id="pane-scatter" style="display:none">
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Зарплата vs Инфляция (последний год)</div>
+      </div>
+      <div class="chart-box"><canvas id="c-scatter" role="img" aria-label="Scatter: зарплата vs инфляция">Данные загружаются</canvas></div>
+    </div>
+  </div>
+
+  <!-- Rating -->
   <div id="pane-rating" style="display:none">
     <div class="block">
       <div class="block-header"><div class="block-title">Рейтинг по ВВП на душу населения</div></div>
@@ -129,9 +222,11 @@ header{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
       <div class="rating-list" id="diff-by"></div>
     </div>
   </div>
+
+  <!-- Compare -->
   <div id="pane-compare" style="display:none">
     <div class="block">
-      <div class="block-header"><div class="block-title">Сравнение двух стран</div></div>
+      <div class="block-header"><div class="block-title">Страна vs Страна</div></div>
       <div class="cmp-grid">
         <select class="cmp-select" id="cmp-a" onchange="renderCompare()"></select>
         <select class="cmp-select" id="cmp-b" onchange="renderCompare()"></select>
@@ -142,48 +237,114 @@ header{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 0;display:flex;justify
       </table>
     </div>
   </div>
-  <div class="source">Источник: <a href="https://data.worldbank.org" target="_blank" rel="noopener">World Bank Open Data</a>. Обновляется автоматически каждую неделю через GitHub Actions.</div>
+
+  <div class="source">
+    Источник: <a href="https://data.worldbank.org" target="_blank" rel="noopener">World Bank Open Data</a>. Обновляется автоматически через GitHub Actions.
+    <div class="shortcuts">
+      Шорткаты: <span><span class="kbd">1</span>–<span class="kbd">8</span> вкладки</span>
+      <span><span class="kbd">L</span> легенда вкл/выкл</span>
+      <span><span class="kbd">P</span> подписи</span>
+      <span><span class="kbd">D</span> тёмная тема</span>
+    </div>
+  </div>
 </div>
+
 <script>
-const COUNTRIES=[{code:'BY',name:'Беларусь',flag:'🇧🇾',color:'#dc2626'},{code:'PL',name:'Польша',flag:'🇵🇱',color:'#1d4ed8'},{code:'LT',name:'Литва',flag:'🇱🇹',color:'#0f766e'},{code:'LV',name:'Латвия',flag:'🇱🇻',color:'#7c3aed'},{code:'UA',name:'Украина',flag:'🇺🇦',color:'#b45309'},{code:'RU',name:'Россия',flag:'🇷🇺',color:'#6b7280'}];
-let DATA={},CHARTS={},LABELS_ON={gdp:false,inf:false};
+const COUNTRIES=[
+  {code:'BY',name:'Беларусь',flag:'🇧🇾',color:'#dc2626'},
+  {code:'PL',name:'Польша',  flag:'🇵🇱',color:'#1d4ed8'},
+  {code:'LT',name:'Литва',   flag:'🇱🇹',color:'#0f766e'},
+  {code:'LV',name:'Латвия',  flag:'🇱🇻',color:'#7c3aed'},
+  {code:'UA',name:'Украина', flag:'🇺🇦',color:'#b45309'},
+  {code:'RU',name:'Россия',  flag:'🇷🇺',color:'#6b7280'},
+];
+
+const ANNOTATIONS=[
+  {year:2008,label:'Кризис 2008'},
+  {year:2020,label:'Ковид 2020'},
+  {year:2022,label:'Война 2022'},
+];
+
+let DATA={},CHARTS={};
+let STATE={
+  labels:{gdp:false,inf:false},
+  log:{gdp:false,inf:false},
+  norm:{gdp:false,inf:false},
+  ppp:false,
+  yearFrom:{gdp:2005,inf:2005,wage:2010},
+  yearTo:{gdp:2024,inf:2024,wage:2024},
+};
+
 function isDark(){return document.body.classList.contains('dark');}
 function gc(){return isDark()?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)';}
 function tc(){return isDark()?'#777':'#999';}
-const themeBtn=document.getElementById('theme-btn');
-themeBtn.addEventListener('click',()=>{document.body.classList.toggle('dark');themeBtn.textContent=isDark()?'☀️ Светлая тема':'🌙 Тёмная тема';Object.values(CHARTS).forEach(ch=>{ch.options.scales.x.grid.color=gc();ch.options.scales.x.ticks.color=tc();ch.options.scales.y.grid.color=gc();ch.options.scales.y.ticks.color=tc();ch.update();});});
-if(window.matchMedia('(prefers-color-scheme:dark)').matches){document.body.classList.add('dark');themeBtn.textContent='☀️ Светлая тема';}
 function fmt(n,dec=0){if(n==null||isNaN(n))return'—';return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:dec}).format(n);}
 function lastVal(arr){return(arr||[]).filter(d=>d.value!=null).at(-1);}
-function buildStats(elId,series,fmtFn,showDiff){
-  const el=document.getElementById(elId);el.innerHTML='';
-  const byV=lastVal(series['BY']);
-  COUNTRIES.forEach(c=>{const last=lastVal(series[c.code]);const d=document.createElement('div');d.className='stat';let diff='';if(showDiff&&last&&byV&&c.code!=='BY'){const p=((last.value-byV.value)/byV.value*100);diff=`<div class="stat-diff" style="color:${p>0?'#0f766e':'#dc2626'}">${p>0?'+':''}${fmt(p,1)}% vs BY</div>`;}d.innerHTML=`<div class="stat-flag">${c.flag}</div><div class="stat-name">${c.name}</div><div class="stat-val" style="color:${c.color}">${last?fmtFn(last.value):'—'}</div><div class="stat-year">${last?last.year+' г.':''}</div>${diff}`;el.appendChild(d);});
-}
-function buildLegend(elId,chartKey){
-  const el=document.getElementById(elId);
-  const items=COUNTRIES.map((c,i)=>`<span class="leg-item" data-idx="${i}" data-chart="${chartKey}"><span class="ldot" style="background:${c.color}"></span>${c.flag} ${c.name}</span>`).join('');
-  const reset=chartKey?`<span class="leg-item leg-reset-btn" data-chart="${chartKey}" style="margin-left:auto;color:var(--muted);font-size:0.7rem">Все</span>`:'';
-  el.innerHTML=items+reset;
-  el.querySelectorAll('.leg-item:not(.leg-reset-btn)').forEach(item=>{
-    item.addEventListener('click',()=>{
-      const ch=CHARTS[item.dataset.chart];if(!ch)return;
-      const idx=parseInt(item.dataset.idx);
-      const meta=ch.getDatasetMeta(idx);
-      meta.hidden=!meta.hidden;
-      item.style.opacity=meta.hidden?'0.3':'1';
-      item.style.textDecoration=meta.hidden?'line-through':'none';
-      ch.update();
-    });
-  });
-  const resetBtn=el.querySelector('.leg-reset-btn');
-  if(resetBtn)resetBtn.addEventListener('click',()=>{
-    const ch=CHARTS[resetBtn.dataset.chart];if(!ch)return;
-    ch.data.datasets.forEach((_,i)=>{ch.getDatasetMeta(i).hidden=false;});
-    el.querySelectorAll('.leg-item:not(.leg-reset-btn)').forEach(item=>{item.style.opacity='1';item.style.textDecoration='none';});
+function prevVal(arr){const v=arr.filter(d=>d.value!=null);return v.length>=2?v[v.length-2]:null;}
+
+// Theme
+const themeBtn=document.getElementById('theme-btn');
+function applyTheme(){
+  Object.values(CHARTS).forEach(ch=>{
+    if(!ch)return;
+    ch.options.scales.x.grid.color=gc();ch.options.scales.x.ticks.color=tc();
+    ch.options.scales.y.grid.color=gc();ch.options.scales.y.ticks.color=tc();
     ch.update();
   });
 }
+themeBtn.addEventListener('click',()=>{
+  document.body.classList.toggle('dark');
+  themeBtn.textContent=isDark()?'☀️ Светлая':'🌙 Тёмная';
+  applyTheme();
+});
+if(window.matchMedia('(prefers-color-scheme:dark)').matches){
+  document.body.classList.add('dark');themeBtn.textContent='☀️ Светлая';
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+  const tabs=['gdp','inf','wage','unemp','debt','scatter','rating','compare'];
+  if(e.key>='1'&&e.key<='8')switchTab(tabs[parseInt(e.key)-1]);
+  if(e.key==='d'||e.key==='D'){document.body.classList.toggle('dark');themeBtn.textContent=isDark()?'☀️ Светлая':'🌙 Тёмная';applyTheme();}
+  if(e.key==='p'||e.key==='P')toggleLabels(currentTab());
+  if(e.key==='l'||e.key==='L')toggleAllLegend();
+});
+function currentTab(){return document.querySelector('.tab.on')?.dataset.t||'gdp';}
+let legendHidden=false;
+function toggleAllLegend(){
+  legendHidden=!legendHidden;
+  document.querySelectorAll('.legend').forEach(el=>{el.style.display=legendHidden?'none':'';});
+}
+
+// Year range sliders
+['gdp','inf','wage'].forEach(key=>{
+  const rf=document.getElementById('range-from-'+key);
+  const rt=document.getElementById('range-to-'+key);
+  const lf=document.getElementById('yr-from-'+key);
+  const lt=document.getElementById('yr-to-'+key);
+  if(!rf)return;
+  rf.addEventListener('input',()=>{
+    STATE.yearFrom[key]=parseInt(rf.value);
+    if(STATE.yearFrom[key]>STATE.yearTo[key]-1){STATE.yearFrom[key]=STATE.yearTo[key]-1;rf.value=STATE.yearFrom[key];}
+    lf.textContent=STATE.yearFrom[key];
+    rebuildChart(key);
+  });
+  rt.addEventListener('input',()=>{
+    STATE.yearTo[key]=parseInt(rt.value);
+    if(STATE.yearTo[key]<STATE.yearFrom[key]+1){STATE.yearTo[key]=STATE.yearFrom[key]+1;rt.value=STATE.yearTo[key];}
+    lt.textContent=STATE.yearTo[key];
+    rebuildChart(key);
+  });
+});
+
+// PPP toggle
+document.getElementById('ppp-toggle').addEventListener('change',e=>{
+  STATE.ppp=e.target.checked;
+  rebuildChart('gdp');
+});
+
+// Inline labels plugin
 const inlineLabelsPlugin={id:'inlineLabels',afterDatasetsDraw(chart){
   if(!chart._showLabels)return;
   const{ctx,data}=chart;
@@ -191,57 +352,323 @@ const inlineLabelsPlugin={id:'inlineLabels',afterDatasetsDraw(chart){
     const meta=chart.getDatasetMeta(di);if(meta.hidden)return;
     meta.data.forEach((pt,pi)=>{
       const v=ds.data[pi];if(v==null)return;
-      ctx.save();ctx.font='bold 9px -apple-system,sans-serif';ctx.fillStyle=ds.borderColor;ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(chart._fmtFn(v),pt.x,pt.y-6);ctx.restore();
+      ctx.save();ctx.font='bold 9px -apple-system,sans-serif';ctx.fillStyle=ds.borderColor;
+      ctx.textAlign='center';ctx.textBaseline='bottom';
+      ctx.fillText(chart._fmtFn(v),pt.x,pt.y-6);ctx.restore();
     });
   });
 }};
 Chart.register(inlineLabelsPlugin);
-function lineChart(cid,series,fmtFn,showLabels){
-  const years=[...new Set(Object.values(series).flat().map(d=>d.year))].sort();
-  const ch=new Chart(document.getElementById(cid),{type:'line',data:{labels:years,datasets:COUNTRIES.map(c=>({label:c.name,data:years.map(y=>{const p=(series[c.code]||[]).find(d=>d.year===y);return p?.value??null;}),borderColor:c.color,backgroundColor:c.color+'12',tension:0.35,spanGaps:true,pointRadius:showLabels?3:2,borderWidth:2}))},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:showLabels?28:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${fmtFn(ctx.parsed.y)}`}}},scales:{x:{grid:{color:gc()},ticks:{color:tc(),maxTicksLimit:9}},y:{grid:{color:gc()},ticks:{color:tc(),callback:v=>fmtFn(v)}}}}});
+
+function getSeries(key){
+  if(key==='gdp') return STATE.ppp?(DATA.gdp_ppp||DATA.gdp_per_capita):DATA.gdp_per_capita;
+  if(key==='inf') return DATA.inflation;
+  if(key==='wage') return DATA.wages;
+  if(key==='unemp') return DATA.unemployment;
+  if(key==='debt') return DATA.debt;
+  return {};
+}
+
+function filterByYear(series,fromY,toY){
+  const out={};
+  Object.keys(series).forEach(code=>{
+    out[code]=(series[code]||[]).filter(d=>d.year>=fromY&&d.year<=toY);
+  });
+  return out;
+}
+
+function normalizeToBase(series,baseYear){
+  const out={};
+  Object.keys(series).forEach(code=>{
+    const base=(series[code]||[]).find(d=>d.year===baseYear);
+    const bv=base?.value;
+    out[code]=(series[code]||[]).map(d=>({year:d.year,value:d.value!=null&&bv?Math.round(d.value/bv*100*10)/10:null}));
+  });
+  return out;
+}
+
+function lineChart(cid,series,fmtFn,showLabels,logScale,withAnnotations){
+  const fromY=STATE.yearFrom[cid.replace('c-','')]||2005;
+  const toY=STATE.yearTo[cid.replace('c-','')]||2024;
+  const filtered=filterByYear(series,fromY,toY);
+  const years=[...new Set(Object.values(filtered).flat().map(d=>d.year))].sort();
+  const ch=new Chart(document.getElementById(cid),{
+    type:'line',
+    data:{labels:years,datasets:COUNTRIES.map(c=>({
+      label:c.name,
+      data:years.map(y=>{const p=(filtered[c.code]||[]).find(d=>d.year===y);return p?.value??null;}),
+      borderColor:c.color,backgroundColor:c.color+'12',
+      tension:0.35,spanGaps:true,pointRadius:showLabels?3:2,borderWidth:2,
+    }))},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      layout:{padding:{top:showLabels?28:8}},
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${fmtFn(ctx.parsed.y)}`}},
+        annotation:withAnnotations?{annotations:ANNOTATIONS.filter(a=>a.year>=fromY&&a.year<=toY).reduce((acc,a)=>{
+          acc['ann'+a.year]={type:'line',xMin:a.year,xMax:a.year,borderColor:'rgba(100,100,100,0.3)',borderWidth:1,borderDash:[4,3],
+            label:{content:a.label,enabled:true,position:'start',font:{size:9},color:'rgba(100,100,100,0.7)',backgroundColor:'transparent',padding:2}};
+          return acc;
+        },{})
+        }:{},
+      },
+      scales:{
+        x:{grid:{color:gc()},ticks:{color:tc(),maxTicksLimit:10}},
+        y:{type:logScale?'logarithmic':'linear',grid:{color:gc()},ticks:{color:tc(),callback:v=>fmtFn(v)}}
+      }
+    }
+  });
   ch._showLabels=showLabels;ch._fmtFn=fmtFn;return ch;
 }
-function barChart(cid,series,fmtFn){return new Chart(document.getElementById(cid),{type:'bar',data:{labels:COUNTRIES.map(c=>c.flag+' '+c.name),datasets:[{data:COUNTRIES.map(c=>{const l=lastVal(series[c.code]);return l?.value??null;}),backgroundColor:COUNTRIES.map(c=>c.color+'cc'),borderColor:COUNTRIES.map(c=>c.color),borderWidth:1,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${fmtFn(ctx.parsed.y)}`}}},scales:{x:{grid:{color:gc()},ticks:{color:tc()}},y:{grid:{color:gc()},ticks:{color:tc(),callback:v=>fmtFn(v)}}}}});}
-function toggleLabels(key){
-  LABELS_ON[key]=!LABELS_ON[key];
-  document.getElementById('labels-'+key+'-btn').classList.toggle('active',LABELS_ON[key]);
+
+function barChart(cid,series,fmtFn){
+  return new Chart(document.getElementById(cid),{
+    type:'bar',
+    data:{
+      labels:COUNTRIES.map(c=>c.flag+' '+c.name),
+      datasets:[{
+        data:COUNTRIES.map(c=>{const l=lastVal(series[c.code]);return l?.value??null;}),
+        backgroundColor:COUNTRIES.map(c=>c.color+'cc'),borderColor:COUNTRIES.map(c=>c.color),borderWidth:1,borderRadius:5,
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${fmtFn(ctx.parsed.y)}`}}},
+      scales:{x:{grid:{color:gc()},ticks:{color:tc()}},y:{grid:{color:gc()},ticks:{color:tc(),callback:v=>fmtFn(v)}}}}
+  });
+}
+
+function buildScatter(){
+  if(CHARTS.scatter)CHARTS.scatter.destroy();
+  const datasets=COUNTRIES.map(c=>{
+    const w=lastVal(DATA.wages?.[c.code]);
+    const i=lastVal(DATA.inflation?.[c.code]);
+    if(!w||!i)return null;
+    return{label:c.name,data:[{x:i.value,y:w.value}],backgroundColor:c.color+'cc',borderColor:c.color,pointRadius:10,pointHoverRadius:13};
+  }).filter(Boolean);
+  CHARTS.scatter=new Chart(document.getElementById('c-scatter'),{
+    type:'scatter',data:{datasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{title:ctx=>ctx[0].dataset.label,label:ctx=>`Зарплата: ${fmt(ctx.parsed.y)} $ / Инфляция: ${fmt(ctx.parsed.x,1)}%`}}},
+      scales:{
+        x:{grid:{color:gc()},ticks:{color:tc(),callback:v=>v+'%'},title:{display:true,text:'Инфляция (%)',color:tc(),font:{size:11}}},
+        y:{grid:{color:gc()},ticks:{color:tc(),callback:v=>fmt(v)+' $'},title:{display:true,text:'Зарплата (USD/мес)',color:tc(),font:{size:11}}}
+      }
+    }
+  });
+  // Add country labels
+  const orig=CHARTS.scatter.options.plugins.tooltip;
+  setTimeout(()=>{
+    const ch=CHARTS.scatter;if(!ch)return;
+    const ctx2=ch.ctx;
+    datasets.forEach((ds,di)=>{
+      const meta=ch.getDatasetMeta(di);
+      if(meta.data[0]){
+        const pt=meta.data[0];
+        ctx2.save();ctx2.font='bold 11px -apple-system,sans-serif';ctx2.fillStyle=ds.borderColor;
+        ctx2.textAlign='center';ctx2.fillText(COUNTRIES.find(c=>c.name===ds.label)?.flag+' '+ds.label,pt.x,pt.y-14);ctx2.restore();
+      }
+    });
+  },100);
+}
+
+function rebuildChart(key){
+  const series=getSeries(key);
+  if(!series)return;
+  const fromY=STATE.yearFrom[key]||2005;
+  const toY=STATE.yearTo[key]||2024;
+  const finalSeries=STATE.norm[key]?normalizeToBase(series,fromY):series;
+  const fmtFn=STATE.norm[key]
+    ?(v=>fmt(v,1))
+    :key==='gdp'?(v=>fmt(v)+'$'):key==='inf'?(v=>fmt(v,1)+'%'):key==='wage'?(v=>fmt(v)+' $'):key==='unemp'?(v=>fmt(v,1)+'%'):(v=>fmt(v,1)+'%');
   if(CHARTS[key])CHARTS[key].destroy();
-  const series=key==='gdp'?DATA.gdp_per_capita:DATA.inflation;
-  const fmtFn=key==='gdp'?v=>fmt(v)+'$':v=>fmt(v,1)+'%';
-  CHARTS[key]=lineChart('c-'+key,series,fmtFn,LABELS_ON[key]);
+  CHARTS[key]=lineChart('c-'+key,finalSeries,fmtFn,STATE.labels[key],STATE.log[key],['gdp','inf'].includes(key));
   buildLegend('leg-'+key,key);
 }
+
+function buildLegend(elId,chartKey){
+  const el=document.getElementById(elId);
+  const items=COUNTRIES.map((c,i)=>`<span class="leg-item" data-idx="${i}" data-chart="${chartKey}"><span class="ldot" style="background:${c.color}"></span>${c.flag} ${c.name}</span>`).join('');
+  const reset=`<span class="leg-item leg-reset-btn" data-chart="${chartKey}" style="margin-left:auto;color:var(--muted);font-size:0.7rem">Все</span>`;
+  el.innerHTML=items+reset;
+  el.querySelectorAll('.leg-item:not(.leg-reset-btn)').forEach(item=>{
+    item.addEventListener('click',()=>{
+      const ch=CHARTS[item.dataset.chart];if(!ch)return;
+      const idx=parseInt(item.dataset.idx);
+      const meta=ch.getDatasetMeta(idx);meta.hidden=!meta.hidden;
+      item.style.opacity=meta.hidden?'0.3':'1';item.style.textDecoration=meta.hidden?'line-through':'none';ch.update();
+    });
+  });
+  const rb=el.querySelector('.leg-reset-btn');
+  if(rb)rb.addEventListener('click',()=>{
+    const ch=CHARTS[rb.dataset.chart];if(!ch)return;
+    ch.data.datasets.forEach((_,i)=>{ch.getDatasetMeta(i).hidden=false;});
+    el.querySelectorAll('.leg-item:not(.leg-reset-btn)').forEach(it=>{it.style.opacity='1';it.style.textDecoration='none';});
+    ch.update();
+  });
+}
+
+function toggleLabels(key){
+  STATE.labels[key]=!STATE.labels[key];
+  document.getElementById('labels-'+key+'-btn')?.classList.toggle('active',STATE.labels[key]);
+  rebuildChart(key);
+}
+function toggleLog(key){
+  STATE.log[key]=!STATE.log[key];
+  document.getElementById('log-'+key+'-btn')?.classList.toggle('active',STATE.log[key]);
+  rebuildChart(key);
+}
+function toggleNorm(key){
+  STATE.norm[key]=!STATE.norm[key];
+  document.getElementById('norm-'+key+'-btn')?.classList.toggle('active',STATE.norm[key]);
+  rebuildChart(key);
+}
+
+// Animate number count-up
+function animateNum(el,target,dec,suffix){
+  const dur=600,steps=30,inc=target/steps;
+  let cur=0,s=0;
+  const t=setInterval(()=>{
+    cur=Math.min(cur+inc,target);s++;
+    el.textContent=fmt(cur,dec)+suffix;
+    if(s>=steps){el.textContent=fmt(target,dec)+suffix;clearInterval(t);}
+  },dur/steps);
+}
+
+// Sparkline SVG
+function sparkline(data,color){
+  const vals=data.filter(d=>d.value!=null).slice(-6).map(d=>d.value);
+  if(vals.length<2)return'';
+  const mn=Math.min(...vals),mx=Math.max(...vals),w=60,h=20;
+  const pts=vals.map((v,i)=>{
+    const x=i/(vals.length-1)*w;
+    const y=mx===mn?h/2:h-(v-mn)/(mx-mn)*h;
+    return`${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  return`<svg class="sparkline" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function buildStats(elId,series,fmtFn,suffix,dec,showDiff){
+  const el=document.getElementById(elId);el.innerHTML='';
+  const byV=lastVal(series['BY']);
+  COUNTRIES.forEach(c=>{
+    const last=lastVal(series[c.code]);
+    const prev=prevVal(series[c.code]);
+    const d=document.createElement('div');d.className='stat';
+    let diff='',trend='';
+    if(showDiff&&last&&byV&&c.code!=='BY'){
+      const p=((last.value-byV.value)/byV.value*100);
+      diff=`<div class="stat-diff" style="color:${p>0?'var(--green)':'var(--red)'}">${p>0?'+':''}${fmt(p,1)}% vs BY</div>`;
+    }
+    if(last&&prev&&prev.value!=null){
+      const chg=last.value-prev.value;const pct=(chg/Math.abs(prev.value)*100);
+      const up=chg>0;
+      trend=`<div class="stat-trend" style="color:${up?'var(--green)':'var(--red)'}"><span>${up?'↑':'↓'}</span><span>${fmt(Math.abs(pct),1)}% к ${prev.year}</span></div>`;
+    }
+    const spark=sparkline(series[c.code]||[],c.color);
+    d.innerHTML=`<div class="stat-flag">${c.flag}</div><div class="stat-name">${c.name}</div><div class="stat-val" style="color:${c.color}" data-target="${last?.value??0}" data-dec="${dec}" data-suffix="${suffix}">—</div><div class="stat-year">${last?last.year+' г.':''}</div>${trend}${diff}${spark}`;
+    el.appendChild(d);
+    if(last){
+      const valEl=d.querySelector('.stat-val');
+      setTimeout(()=>animateNum(valEl,last.value,dec,suffix),50);
+    }
+  });
+}
+
 function buildRating(series,fmtFn){
   const sorted=COUNTRIES.map(c=>{const l=lastVal(series[c.code]);return{...c,val:l?.value??null};}).filter(c=>c.val!=null).sort((a,b)=>b.val-a.val);
   const maxV=sorted[0]?.val||1,byV=sorted.find(c=>c.code==='BY')?.val||1;
   document.getElementById('rating-gdp').innerHTML=sorted.map((c,i)=>`<div class="rating-row"><span class="rating-rank">${i+1}</span><span class="rating-flag">${c.flag}</span><span class="rating-name">${c.name}</span><div class="rating-bar-wrap"><div class="rating-bar" style="width:${(c.val/maxV*100).toFixed(1)}%;background:${c.color}"></div></div><span class="rating-val" style="color:${c.color}">${fmtFn(c.val)}</span></div>`).join('');
-  document.getElementById('diff-by').innerHTML=sorted.filter(c=>c.code!=='BY').map(c=>{const p=((c.val-byV)/byV*100);return`<div class="rating-row"><span class="rating-flag">${c.flag}</span><span class="rating-name">${c.name}</span><span class="rating-val" style="color:${p>0?'#0f766e':'#dc2626'}">${p>0?'+':''}${fmt(p,1)}%</span></div>`;}).join('');
+  document.getElementById('diff-by').innerHTML=sorted.filter(c=>c.code!=='BY').map(c=>{const p=((c.val-byV)/byV*100);return`<div class="rating-row"><span class="rating-flag">${c.flag}</span><span class="rating-name">${c.name}</span><span class="rating-val" style="color:${p>0?'var(--green)':'var(--red)'}">${p>0?'+':''}${fmt(p,1)}%</span></div>`;}).join('');
 }
-function buildCompareSelects(){const opts=COUNTRIES.map(c=>`<option value="${c.code}">${c.flag} ${c.name}</option>`).join('');document.getElementById('cmp-a').innerHTML=opts;document.getElementById('cmp-b').innerHTML=opts;document.getElementById('cmp-a').value='BY';document.getElementById('cmp-b').value='PL';}
+
+function buildCompareSelects(){
+  const opts=COUNTRIES.map(c=>`<option value="${c.code}">${c.flag} ${c.name}</option>`).join('');
+  document.getElementById('cmp-a').innerHTML=opts;document.getElementById('cmp-b').innerHTML=opts;
+  document.getElementById('cmp-a').value='BY';document.getElementById('cmp-b').value='PL';
+}
+
 function renderCompare(){
   const ca=document.getElementById('cmp-a').value,cb=document.getElementById('cmp-b').value;
   const cA=COUNTRIES.find(c=>c.code===ca),cB=COUNTRIES.find(c=>c.code===cb);
-  document.getElementById('cmp-ha').textContent=cA.flag+' '+cA.name;document.getElementById('cmp-hb').textContent=cB.flag+' '+cB.name;
-  const rows=[{label:'ВВП на душу (USD)',series:DATA.gdp_per_capita,fmt:v=>fmt(v)+' $',higher:true},{label:'Инфляция (%)',series:DATA.inflation,fmt:v=>fmt(v,1)+'%',higher:false},{label:'Зарплата (USD/мес)',series:DATA.wages,fmt:v=>fmt(v)+' $',higher:true}];
-  document.getElementById('cmp-body').innerHTML=rows.map(r=>{const lA=lastVal(r.series[ca]),lB=lastVal(r.series[cb]),vA=lA?.value,vB=lB?.value,aW=vA!=null&&vB!=null&&(r.higher?vA>vB:vA<vB),bW=vA!=null&&vB!=null&&(r.higher?vB>vA:vB<vA);return`<tr><td style="color:var(--muted)">${r.label}</td><td class="${aW?'win':bW?'lose':''}">${vA!=null?r.fmt(vA):'—'}</td><td class="${bW?'win':aW?'lose':''}">${vB!=null?r.fmt(vB):'—'}</td></tr>`;}).join('');
+  document.getElementById('cmp-ha').textContent=cA.flag+' '+cA.name;
+  document.getElementById('cmp-hb').textContent=cB.flag+' '+cB.name;
+  const rows=[
+    {label:'ВВП на душу (USD)',series:DATA.gdp_per_capita,fmt:v=>fmt(v)+' $',higher:true},
+    {label:'Инфляция (%)',series:DATA.inflation,fmt:v=>fmt(v,1)+'%',higher:false},
+    {label:'Зарплата (USD/мес)',series:DATA.wages,fmt:v=>fmt(v)+' $',higher:true},
+    {label:'Безработица (%)',series:DATA.unemployment,fmt:v=>fmt(v,1)+'%',higher:false},
+    {label:'Гос. долг (% ВВП)',series:DATA.debt,fmt:v=>fmt(v,1)+'%',higher:false},
+  ];
+  document.getElementById('cmp-body').innerHTML=rows.map(r=>{
+    if(!r.series)return`<tr><td style="color:var(--muted)">${r.label}</td><td>—</td><td>—</td></tr>`;
+    const lA=lastVal(r.series[ca]),lB=lastVal(r.series[cb]),vA=lA?.value,vB=lB?.value;
+    const aW=vA!=null&&vB!=null&&(r.higher?vA>vB:vA<vB),bW=vA!=null&&vB!=null&&(r.higher?vB>vA:vB<vA);
+    return`<tr><td style="color:var(--muted)">${r.label}</td><td class="${aW?'win':bW?'lose':''}">${vA!=null?r.fmt(vA):'—'}</td><td class="${bW?'win':aW?'lose':''}">${vB!=null?r.fmt(vB):'—'}</td></tr>`;
+  }).join('');
 }
-function exportCSV(key){const series=key==='gdp'?DATA.gdp_per_capita:key==='inf'?DATA.inflation:DATA.wages;const years=[...new Set(Object.values(series).flat().map(d=>d.year))].sort();let csv='Год,'+COUNTRIES.map(c=>c.name).join(',')+'\n';years.forEach(y=>{csv+=y+','+COUNTRIES.map(c=>{const p=(series[c.code]||[]).find(d=>d.year===y);return p?.value??'';}).join(',')+'\n';});const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='stats-'+key+'.csv';a.click();}
-document.querySelectorAll('.tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));['gdp','inf','wage','rating','compare'].forEach(t=>document.getElementById('pane-'+t).style.display='none');btn.classList.add('on');document.getElementById('pane-'+btn.dataset.t).style.display='';if(btn.dataset.t==='compare')renderCompare();});});
+
+function exportCSV(key){
+  const series=getSeries(key);
+  const years=[...new Set(Object.values(series).flat().map(d=>d.year))].sort();
+  let csv='Год,'+COUNTRIES.map(c=>c.name).join(',')+'\n';
+  years.forEach(y=>{csv+=y+','+COUNTRIES.map(c=>{const p=(series[c.code]||[]).find(d=>d.year===y);return p?.value??'';}).join(',')+'\n';});
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='stats-'+key+'.csv';a.click();
+}
+
+function exportPNG(){
+  const key=currentTab();
+  const ch=CHARTS[key];if(!ch)return;
+  const a=document.createElement('a');a.href=ch.toBase64Image();a.download='chart-'+key+'.png';a.click();
+}
+
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  const PANES=['gdp','inf','wage','unemp','debt','scatter','rating','compare'];
+  PANES.forEach(p=>document.getElementById('pane-'+p).style.display='none');
+  document.querySelector(`.tab[data-t="${t}"]`)?.classList.add('on');
+  document.getElementById('pane-'+t).style.display='';
+  if(t==='compare')renderCompare();
+  if(t==='scatter')buildScatter();
+  history.replaceState(null,'','?tab='+t);
+}
+
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click',()=>switchTab(btn.dataset.t));
+});
+
 async function init(){
   try{
     const res=await fetch('data/stats.json');if(!res.ok)throw new Error();
     DATA=await res.json();
     document.getElementById('upd').textContent='Данные обновлены: '+(DATA.updated||'—');
-    buildStats('sg-gdp',DATA.gdp_per_capita,v=>fmt(v)+' $',true);
-    buildStats('sg-inf',DATA.inflation,v=>fmt(v,1)+'%',false);
-    buildStats('sg-wage',DATA.wages,v=>fmt(v)+' $/мес',true);
-    CHARTS.gdp=lineChart('c-gdp',DATA.gdp_per_capita,v=>fmt(v)+'$',false);
-    CHARTS.inf=lineChart('c-inf',DATA.inflation,v=>fmt(v,1)+'%',false);
+
+    // Add placeholder data for new indicators if missing
+    if(!DATA.unemployment)DATA.unemployment={BY:[],PL:[],LT:[],LV:[],UA:[],RU:[]};
+    if(!DATA.debt)DATA.debt={BY:[],PL:[],LT:[],LV:[],UA:[],RU:[]};
+
+    buildStats('sg-gdp',DATA.gdp_per_capita,v=>fmt(v)+' $',' $',0,true);
+    buildStats('sg-inf',DATA.inflation,v=>fmt(v,1)+'%','%',1,false);
+    buildStats('sg-wage',DATA.wages,v=>fmt(v)+' $/мес',' $/мес',0,true);
+    buildStats('sg-unemp',DATA.unemployment,v=>fmt(v,1)+'%','%',1,false);
+    buildStats('sg-debt',DATA.debt,v=>fmt(v,1)+'%','%',1,false);
+
+    CHARTS.gdp=lineChart('c-gdp',DATA.gdp_per_capita,v=>fmt(v)+'$',false,false,true);
+    CHARTS.inf=lineChart('c-inf',DATA.inflation,v=>fmt(v,1)+'%',false,false,true);
     CHARTS.wage=barChart('c-wage',DATA.wages,v=>fmt(v)+' $');
-    buildLegend('leg-gdp','gdp');buildLegend('leg-inf','inf');buildLegend('leg-wage','wage');
+    CHARTS.unemp=lineChart('c-unemp',DATA.unemployment,v=>fmt(v,1)+'%',false,false,false);
+    CHARTS.debt=lineChart('c-debt',DATA.debt,v=>fmt(v,1)+'%',false,false,false);
+
+    ['gdp','inf','wage','unemp','debt'].forEach(k=>buildLegend('leg-'+k,k));
     buildRating(DATA.gdp_per_capita,v=>fmt(v)+' $');
     buildCompareSelects();
-  }catch(e){document.getElementById('upd').textContent='Ошибка загрузки данных';console.error(e);}
+
+    // Restore tab from URL
+    const urlTab=new URLSearchParams(location.search).get('tab');
+    if(urlTab)switchTab(urlTab);
+  }catch(e){
+    document.getElementById('upd').textContent='Ошибка загрузки данных';console.error(e);
+  }
 }
 init();
 </script>
