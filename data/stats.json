@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-29",
+  "updated": "2026-07-13",
   "gdp_per_capita": {
     "BY": [
       {
@@ -80,11 +80,11 @@
       },
       {
         "year": 2024,
-        "value": 8317.6
+        "value": 8605.6
       },
       {
         "year": 2025,
-        "value": null
+        "value": 10279.3
       }
     ],
     "LT": [
@@ -154,23 +154,23 @@
       },
       {
         "year": 2021,
-        "value": 23870.5
+        "value": 23882.9
       },
       {
         "year": 2022,
-        "value": 25085.8
+        "value": 24946.6
       },
       {
         "year": 2023,
-        "value": 27786
+        "value": 27983.4
       },
       {
         "year": 2024,
-        "value": 29384
+        "value": 29603.8
       },
       {
         "year": 2025,
-        "value": null
+        "value": 32958.7
       }
     ],
     "LV": [
@@ -252,11 +252,11 @@
       },
       {
         "year": 2024,
-        "value": 23409.1
+        "value": 23579
       },
       {
         "year": 2025,
-        "value": null
+        "value": 26312
       }
     ],
     "PL": [
@@ -342,7 +342,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 28419.6
       }
     ],
     "RU": [
@@ -416,19 +416,19 @@
       },
       {
         "year": 2022,
-        "value": 15619.6
+        "value": 15625.6
       },
       {
         "year": 2023,
-        "value": 14159.4
+        "value": 13987
       },
       {
         "year": 2024,
-        "value": 14889
+        "value": 14961.9
       },
       {
         "year": 2025,
-        "value": null
+        "value": 17546.6
       }
     ],
     "UA": [
@@ -510,11 +510,11 @@
       },
       {
         "year": 2024,
-        "value": 5389.5
+        "value": 5391.6
       },
       {
         "year": 2025,
-        "value": null
+        "value": 5865.9
       }
     ]
   },
@@ -602,7 +602,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 6.6
       }
     ],
     "LT": [
@@ -688,7 +688,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 3.8
       }
     ],
     "LV": [
@@ -774,7 +774,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 3.7
       }
     ],
     "PL": [
@@ -860,7 +860,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 3.8
       }
     ],
     "RU": [
@@ -946,7 +946,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 8.7
       }
     ],
     "UA": [
@@ -1032,7 +1032,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 12.7
       }
     ]
   },
@@ -1116,11 +1116,11 @@
       },
       {
         "year": 2024,
-        "value": 381
+        "value": 394
       },
       {
         "year": 2025,
-        "value": null
+        "value": 471
       }
     ],
     "PL": [
@@ -1206,7 +1206,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 1303
       }
     ],
     "LT": [
@@ -1276,23 +1276,23 @@
       },
       {
         "year": 2021,
-        "value": 1094
+        "value": 1095
       },
       {
         "year": 2022,
-        "value": 1150
+        "value": 1143
       },
       {
         "year": 2023,
-        "value": 1274
+        "value": 1283
       },
       {
         "year": 2024,
-        "value": 1347
+        "value": 1357
       },
       {
         "year": 2025,
-        "value": null
+        "value": 1511
       }
     ],
     "LV": [
@@ -1374,11 +1374,11 @@
       },
       {
         "year": 2024,
-        "value": 1073
+        "value": 1081
       },
       {
         "year": 2025,
-        "value": null
+        "value": 1206
       }
     ],
     "UA": [
@@ -1464,7 +1464,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 269
       }
     ],
     "RU": [
@@ -1542,15 +1542,15 @@
       },
       {
         "year": 2023,
-        "value": 649
+        "value": 641
       },
       {
         "year": 2024,
-        "value": 682
+        "value": 686
       },
       {
         "year": 2025,
-        "value": null
+        "value": 804
       }
     ]
   },
@@ -1638,7 +1638,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 9085991
       }
     ],
     "LT": [
@@ -1724,7 +1724,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 2888774
       }
     ],
     "LV": [
@@ -1810,7 +1810,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 1847785
       }
     ],
     "PL": [
@@ -1896,7 +1896,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 36435861
       }
     ],
     "RU": [
@@ -1978,11 +1978,11 @@
       },
       {
         "year": 2024,
-        "value": 143533851
+        "value": 143669648
       },
       {
         "year": 2025,
-        "value": null
+        "value": 143513328
       }
     ],
     "UA": [
@@ -2068,7 +2068,7 @@
       },
       {
         "year": 2025,
-        "value": null
+        "value": 38980376
       }
     ]
   },
